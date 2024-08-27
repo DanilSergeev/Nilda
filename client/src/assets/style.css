@@ -1,0 +1,237 @@
+:root {
+    --mainColorOne: #D91C1C;
+    --mainColorOneLight: #EC7B7B;
+    --mainColorOneDark: #8D0909;
+    --mainColorTwo: #118282;
+    --mainColorTwoLight: #64C1C1;
+    --mainColorTwoDark: #055555;
+    --mainColorThree: #90CB1A;
+    --mainColorThreeLight: #C0E577;
+    --mainColorThreeDark: #5B8408;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+hr{
+    margin: 0;
+}
+header{
+    z-index: 1;
+    position: fixed;
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    pointer-events: none;
+}
+.headerLink{
+    text-decoration: none;
+    color: rgb(200, 200, 200);
+    padding: 0 16px;
+}
+
+
+header button{
+    background-repeat: no-repeat;
+    background-size: 71%;
+    background-position: center;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+    border: unset;
+    border-radius: 50px;
+    background-color: rgba(0, 0, 0, 0.256);
+    padding: 30px;
+    display: flex;
+    flex-direction: column; 
+    margin: 3vh;
+    position: relative;
+    pointer-events: auto;
+    z-index: 1;
+}
+.offcanvas{
+    background-color: #2a2e33;
+}
+.offcanvas hr{
+    color: white;
+}
+.offcanvas-body{
+    display: flex;
+    flex-direction: column;
+}
+.offcanvas-body a{
+    padding-bottom: 2vh;
+}
+
+.CustomButton{
+    padding: 6px 20px;
+    border-radius: 12px;
+    border:  unset;
+    color: white;
+
+}
+.CustomButtonGreen{
+    background-color: var(--mainColorTwo);
+}.CustomButtonGreen:hover {
+    background-color: var(--mainColorTwoDark);
+}
+.CustomButtonBlue{
+    background-color: var(--mainColorThree);
+}.CustomButtonBlue:hover{
+    background-color: var(--mainColorThreeDark);
+}
+.CustomButtonRed{
+    background-color: var(--mainColorOne);
+}.CustomButtonRed:hover{
+    background-color: var(--mainColorOneDark);
+}
+
+footer {
+    margin-top: auto;
+    min-height: 10vh;
+    background: #2a2a2a;
+    display: flex;
+    align-items: center;
+    color: rgb(249, 249, 249);
+}
+
+h2 {
+    font-size: 44px;
+}
+
+h6 {
+    font-size: 22px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-align: center;
+}
+
+
+/*  */
+.WelcomeHomeComponents {
+    background-color: rgb(231, 255, 219);
+    display: flex;
+    flex-direction: column-reverse;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-image: url('img/welcomimg.jpg');
+}
+
+.WelcomeHomeComponents button {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 16vh;
+}
+/*  */
+
+/*  */
+.carouselHome {
+    text-align: left;
+}
+
+.carouselHome .active {
+    display: flex;
+    justify-content: space-around;
+}
+
+.carouselHome .carousel-control-next,
+.carouselHome .carousel-control-prev {
+    width: 3%;
+}
+
+.carouselHome .card-img {
+    width: 100%;
+    height: 100%;
+    max-height: 280px;
+    margin: 0 auto;
+    box-shadow: 0px 0px 0px 4px #d3d3d383;
+    transition: all 0.1s linear;
+    border-radius: 0%;
+}
+
+.carouselHome .card-body {
+    flex-direction: column;
+    display: flex;
+    align-items: baseline;
+}
+
+.carouselHome .card {
+    width: 20rem;
+    border: 4px solid #d3d3d383;
+    border-radius: 0;
+    transition: all 0.1s linear;
+}
+
+.carouselHome .card:hover .card-img {
+    box-shadow: 0px 0px 0px 4px var(--mainColorTwo);
+}
+
+.carouselHome .card:hover {
+    border: 4px solid var(--mainColorTwo);
+}
+
+
+
+/* ImageLineHomeComponents */
+.ImageLineHomeComponents {
+    height: 18vh;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    z-index: -1;
+    position: relative;
+}
+
+.ImageLineHomeComponents::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.652);
+}
+
+/*  */
+.AboutUsHomeComponents p {
+    text-align: justify;
+    line-height: 2;
+}
+/* heroesOrItemsPage */
+.heroesOrItemsPage .carouselHome{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: 2vh;
+    /* justify-items: center; */
+}
+
+.ButtonsListIdeas{
+    display: flex;
+    align-items: center;
+}
+.ButtonsListIdeas button{
+    margin-left: 1rem;
+}
