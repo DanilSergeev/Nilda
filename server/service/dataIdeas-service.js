@@ -15,13 +15,14 @@ class IdeasService {
         return ideaData
     }
     async createIdea(title, text = "") {
-        const checkIdea = await Ideas.findOne({ where: { title } })
+        const checkIdea = await Ideas.findOne({ where: { title } });
         if (checkIdea) {
-            return ApiError.BadRequest(400,`Такой загаловок существует ${title}`)
+            throw ApiError.BadRequest(`Такой загаловок существует ${title}`);
         }
-        const idea = await Ideas.create({ title, text })
-        return { idea }
+        const idea = await Ideas.create({ title, text });
+        return { idea };
     }
+    
 
     async updateIdea(id,) {
         const ideaData = await Ideas.update(

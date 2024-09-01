@@ -19,13 +19,13 @@ class IdeasController {
             next(error)
         }
     }
-    async createIdea(req, res) {
+    async createIdea(req, res,next) {
         try {
             const { title, text } = req.body
             const ideaData = await IdeasService.createIdea(title, text)
             return res.json(ideaData)
         } catch (error) {
-            console.log(error)
+            next(error)
         }
     }
 

@@ -6,6 +6,7 @@ const models = require("./models/models.js")
 const fileupload = require("express-fileupload")
 const path = require("path")
 const router = require('./router/index')
+const errorMiddleware = require('./middlware/error-middlware');
 
 const PORT = process.env.PORT || 5000;
 const app = express()
@@ -20,6 +21,7 @@ app.use(fileupload({}))
 app.use('/api', router);
 app.use(express.static(path.resolve(__dirname,"static")))
 
+app.use(errorMiddleware);
 
 const start = async () => {
     try {
