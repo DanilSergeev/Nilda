@@ -13,10 +13,11 @@ interface ListIdea {
 
 interface ListIdeasProps {
   ideasData: ListIdea[];
+  onTargetClick: (id: number) => void;
   onDeleteClick: (id: number) => void;
 }
 
-const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onDeleteClick }) => {
+const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDeleteClick }) => {
   const [sortBy, setSortBy] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<boolean>(true); 
@@ -98,7 +99,7 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onDeleteClick }) =>
                 </div>
               </div>
               <div className='ButtonsListIdeas'>
-                <CustomButton>Подробнее</CustomButton>
+                <CustomButton onClick={() => onTargetClick(item.id)}>Подробнее</CustomButton>
                 <CustomButton themeColor='Red' onClick={() => onDeleteClick(item.id)}>Удалить</CustomButton>
               </div>
             </ListGroup.Item>

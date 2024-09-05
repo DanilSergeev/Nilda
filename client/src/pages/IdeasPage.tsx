@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import IdeasService from '../services/ideasService';
 import CustomButton from '../components/GeneralComponents/button/CustomButton';
 import MyModal from '../components/GeneralComponents/modal/MyModal';
@@ -15,8 +14,8 @@ interface IDataIdeas {
 }
 
 const IdeasPage: React.FC = () => {
-    const { id } = useParams<{ id?: string }>();
     const [ideasData, setIdeasData] = useState<IDataIdeas[]>([]);
+    const [ideaTargetData, setIdeaTargetData] = useState<IDataIdeas>();
     const [showModalDel, setShowModalDel] = useState(false);
     const [idForDeleted, setIdForDeleted] = useState<number | null>(null);
     const [alertSetting, setAlertSetting] = useState({
@@ -70,14 +69,30 @@ const IdeasPage: React.FC = () => {
     }, []);
 
 
+
+    const featchDataTargetIdea = async (id: number) => {
+        const data= await IdeasService.getIdea(id) as { data: IDataIdeas };
+        setIdeaTargetData(data.data)
+    };
+
+
     return (
         <>
             <main>
                 <section className='targetIdea'>
-
+                    {
+                        ideaTargetData ?
+                            <>
+                                <h2>{ideaTargetData.title}</h2>
+                                <p>{ideaTargetData.updatedAt}</p>
+                                <p>{ideaTargetData.text}</p>
+                            </>
+                            :
+                            <></>
+                    }
                 </section>
                 <FormCreateIdeasComponent onSubmit={sendDataCreate} />
-                <ListIdeasComponent ideasData={ideasData} onDeleteClick={funShowModalDel} />
+                <ListIdeasComponent ideasData={ideasData} onTargetClick={featchDataTargetIdea} onDeleteClick={funShowModalDel} />
             </main>
 
             <MyModal modalActiv={showModalDel} setModalActiv={setShowModalDel}>
