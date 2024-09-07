@@ -20,7 +20,7 @@ interface ListIdeasProps {
 const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDeleteClick }) => {
   const [sortBy, setSortBy] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [sortDirection, setSortDirection] = useState<boolean>(true); 
+  const [sortDirection, setSortDirection] = useState<boolean>(true);
 
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(event.target.value);
@@ -64,14 +64,14 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDe
   const sortedAndFilteredIdeas = filterIdeas(sortIdeas(ideasData));
 
   return (
-    <section className='listIdeas'>
+    <section className='listIdeas mb-4'>
       <div className='wrapper mb-4'>
         <div className='searchIdeas mb-3'>
-          <Form.Select aria-label="Default select example" onChange={handleSortChange}>
+          <Form.Select defaultValue={"0"} aria-label="Default select example" onChange={handleSortChange}>
             <option value="" disabled>Выберите сортировку</option>
             <option value="1">Заголовок</option>
             <option value="2">Текст</option>
-            <option value="3">Время добавления</option>
+            <option value="3">Время добавления(без поиска)</option>
           </Form.Select>
           <CustomButton onClick={toggleSortDirection}>
             {sortDirection ? 'По убыванию' : 'По возрастанию'}
@@ -83,7 +83,7 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDe
           value={searchTerm}
           onChange={handleSearchChange}
           className="mb-3"
-        /> 
+        />
       </div>
 
       <ListGroup className='wrapper' as="ol" numbered>

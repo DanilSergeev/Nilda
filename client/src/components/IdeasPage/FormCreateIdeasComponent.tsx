@@ -11,6 +11,7 @@ const FormCreateIdeasComponent: React.FC<FormCreateIdeasProps> = ({ onSubmit }) 
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
 
+
     const handleSubmit = () => {
         onSubmit(title, text);
         setTitle("");
@@ -18,11 +19,12 @@ const FormCreateIdeasComponent: React.FC<FormCreateIdeasProps> = ({ onSubmit }) 
     };
 
     return (
-        <section className='formCreateIdea wrapper mb-4'>
-            <Form>
+        <section className='formCreateIdea  mb-5'>
+            <Form className='wrapper'>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label>Введите загаловок</Form.Label>
                     <Form.Control
+                        maxLength={255}
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Введите загаловок"

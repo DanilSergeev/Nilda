@@ -19,7 +19,7 @@ const ImageOfItem = sequelize.define('imageOfItem', {
 const Items = sequelize.define('items', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: { type: DataTypes.STRING, unique: true },
-    description: { type: DataTypes.STRING },
+    description: { type: DataTypes.TEXT(1024 * 1024)  },
     categoryId: { type: DataTypes.INTEGER, allowNull: false, references: { model: Category, key: 'id' } },
     countryId: { type: DataTypes.INTEGER, allowNull: false, references: { model: Country, key: 'id' } },
     countryId: { type: DataTypes.INTEGER, allowNull: false, references: { model: Country, key: 'id' } },
@@ -34,7 +34,7 @@ const Items = sequelize.define('items', {
 const Ideas = sequelize.define('ideas', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: { type: DataTypes.STRING, unique: true },
-    text: { type: DataTypes.STRING },
+    text: { type: DataTypes.TEXT(1024 * 1024)  },
 });
 
 const ItemImages = sequelize.define('itemImages', {

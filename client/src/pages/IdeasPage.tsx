@@ -5,6 +5,7 @@ import MyModal from '../components/GeneralComponents/modal/MyModal';
 import Alert from 'react-bootstrap/Alert';
 import ListIdeasComponent from '../components/IdeasPage/listIdeasComponent';
 import FormCreateIdeasComponent from '../components/IdeasPage/FormCreateIdeasComponent';
+import TargetIdeaComponent from '../components/IdeasPage/TargetIdeaComponent';
 
 interface IDataIdeas {
     id: number;
@@ -71,7 +72,7 @@ const IdeasPage: React.FC = () => {
 
 
     const featchDataTargetIdea = async (id: number) => {
-        const data= await IdeasService.getIdea(id) as { data: IDataIdeas };
+        const data = await IdeasService.getIdea(id) as { data: IDataIdeas };
         setIdeaTargetData(data.data)
     };
 
@@ -79,18 +80,7 @@ const IdeasPage: React.FC = () => {
     return (
         <>
             <main>
-                <section className='targetIdea'>
-                    {
-                        ideaTargetData ?
-                            <>
-                                <h2>{ideaTargetData.title}</h2>
-                                <p>{ideaTargetData.updatedAt}</p>
-                                <p>{ideaTargetData.text}</p>
-                            </>
-                            :
-                            <></>
-                    }
-                </section>
+                <TargetIdeaComponent ideaTargetData={ideaTargetData} />
                 <FormCreateIdeasComponent onSubmit={sendDataCreate} />
                 <ListIdeasComponent ideasData={ideasData} onTargetClick={featchDataTargetIdea} onDeleteClick={funShowModalDel} />
             </main>

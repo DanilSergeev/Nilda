@@ -24,11 +24,11 @@ const Header = () => {
                 </Offcanvas.Header>
                 <hr />
                 <Offcanvas.Body >
-                    <Link to="/" className='headerLink'>Главная</Link>
-                    <Link to="/aboutUs" className='headerLink'>О проекте</Link>
-                    <Link to="/ideas" className='headerLink'>Идеи</Link>
-                    <Link to="/itemsById/1/id/0" className='headerLink'>Персонажи</Link>
-                    <Link to="/itemsById/2/id/0" className='headerLink'>Предметы</Link>
+                    <Link to="/" onClick={()=>handleClose()} className='headerLink'>Главная</Link>
+                    <Link to="/aboutUs" onClick={()=>handleClose()} className='headerLink'>О проекте</Link>
+                    <Link to="/ideas" onClick={()=>handleClose()} className='headerLink'>Идеи</Link>
+                    <Link to="/itemsById/1/id/0" onClick={()=>handleClose()} className='headerLink'>Персонажи</Link>
+                    <Link to="/itemsById/2/id/0" onClick={()=>handleClose()} className='headerLink'>Предметы</Link>
                 </Offcanvas.Body>
             </Offcanvas>
         </>
