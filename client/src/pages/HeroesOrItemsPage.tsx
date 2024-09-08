@@ -73,8 +73,7 @@ const HeroesOrItemsPage = () => {
         // getCategory()
         getItems()
         selectedHero()
-    }, [ id])
-// }, [categoryId, id])
+    }, [categoryId, id])
 
 
     return (

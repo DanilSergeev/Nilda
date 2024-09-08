@@ -32,10 +32,12 @@ body {
     flex-direction: column;
 }
 
-hr{
+hr {
     margin: 0;
 }
-header{
+
+
+header {
     z-index: 1;
     position: fixed;
     width: -webkit-fill-available;
@@ -44,14 +46,18 @@ header{
     align-items: flex-end;
     pointer-events: none;
 }
-.headerLink{
+
+.headerLink {
     text-decoration: none;
     color: rgb(200, 200, 200);
     padding: 0 16px;
 }
 
+.text-preWrap{
+    white-space: pre-wrap;
+}
 
-header button{
+header button {
     background-repeat: no-repeat;
     background-size: 71%;
     background-position: center;
@@ -61,46 +67,59 @@ header button{
     background-color: rgba(0, 0, 0, 0.256);
     padding: 30px;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     margin: 3vh;
     position: relative;
     pointer-events: auto;
     z-index: 1;
 }
-.offcanvas{
+
+.offcanvas {
     background-color: #2a2e33;
 }
-.offcanvas hr{
+
+.offcanvas hr {
     color: white;
 }
-.offcanvas-body{
+
+.offcanvas-body {
     display: flex;
     flex-direction: column;
 }
-.offcanvas-body a{
+
+.offcanvas-body a {
     padding-bottom: 2vh;
 }
 
-.CustomButton{
+.CustomButton {
     padding: 6px 20px;
     border-radius: 12px;
-    border:  unset;
+    border: unset;
     color: white;
 
 }
-.CustomButtonGreen{
+
+.CustomButtonGreen {
     background-color: var(--mainColorTwo);
-}.CustomButtonGreen:hover {
+}
+
+.CustomButtonGreen:hover {
     background-color: var(--mainColorTwoDark);
 }
-.CustomButtonBlue{
+
+.CustomButtonBlue {
     background-color: var(--mainColorThree);
-}.CustomButtonBlue:hover{
+}
+
+.CustomButtonBlue:hover {
     background-color: var(--mainColorThreeDark);
 }
-.CustomButtonRed{
+
+.CustomButtonRed {
     background-color: var(--mainColorOne);
-}.CustomButtonRed:hover{
+}
+
+.CustomButtonRed:hover {
     background-color: var(--mainColorOneDark);
 }
 
@@ -147,6 +166,7 @@ h6 {
     margin: 0 auto;
     margin-bottom: 16vh;
 }
+
 /*  */
 
 /*  */
@@ -221,23 +241,27 @@ h6 {
     text-align: justify;
     line-height: 2;
 }
+
 /* heroesOrItemsPage */
-.heroesOrItemsPage .carouselHome{
+.heroesOrItemsPage .carouselHome {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-row-gap: 2vh;
     /* justify-items: center; */
 }
+
 /* .IdeasPage */
-.ButtonsListIdeas{
+.ButtonsListIdeas {
     display: flex;
     align-items: center;
 }
-.ButtonsListIdeas button{
+
+.ButtonsListIdeas button {
     margin-left: 1rem;
 }
+
 /* alert */
-.alert{
+.alert {
     bottom: 7rem;
     left: 3rem;
     z-index: 1050;
@@ -245,13 +269,25 @@ h6 {
 }
 
 /* listIdeas */
-.searchIdeas{
+.searchIdeas {
     display: flex;
 }
-.searchIdeas .form-select{
+
+.searchIdeas .form-select {
     max-width: 20%;
 }
-.searchIdeas  button{
+
+.searchIdeas button {
     margin-left: 1vh;
 }
 
+/* targetIdea */
+.targetIdea span {
+    color: rgb(109, 109, 109);
+    font-size: 12px;
+}
+/* formCreateIdea */
+.formCreateIdea{
+    padding: 3vh 0;
+    background-color: #19875420;
+}
