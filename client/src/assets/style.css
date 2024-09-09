@@ -36,6 +36,10 @@ hr {
     margin: 0;
 }
 
+.a-colorUnset{
+    color: unset;
+    text-decoration: none;
+}
 
 header {
     z-index: 1;

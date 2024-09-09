@@ -20,7 +20,7 @@ const Header = () => {
             </header>
             <Offcanvas placement='end' show={show} onHide={handleClose}>
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title><Link to="/" className='headerLink'>{`${process.env.REACT_APP_TITLE_PROJECT}`}</Link></Offcanvas.Title>
+                    <Offcanvas.Title><Link to="/" onClick={()=>handleClose()} className='headerLink'>{`${process.env.REACT_APP_TITLE_PROJECT}`}</Link></Offcanvas.Title>
                 </Offcanvas.Header>
                 <hr />
                 <Offcanvas.Body >
