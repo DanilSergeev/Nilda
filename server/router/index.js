@@ -3,7 +3,9 @@ const router = new Router()
 const ideasController = require("../controllers/ideas-controller")
 const dataItemController = require("../controllers/dataItem-controller")
 const AuxiliaryDataController = require("../controllers/auxiliaryData-controller")
+const mailController = require("../controllers/mail-controller")
 const upload = require('multer')();
+const { body } = require("express-validator")
 
 
 
@@ -33,5 +35,14 @@ router.post('/creatItem', dataItemController.creatItem)
 router.put('/item/update/:id', dataItemController.updateItem)
 router.put('/item/updateImage/:id', dataItemController.updateItemImages)
 router.delete('/item/:id',  dataItemController.deleteItem)
+// 
+router.post('/mail-send',
+    body('email').isEmail(),
+    body('theam').isLength({ min: 2 }),
+    body('message').isLength({ min: 6 }),
+    mailController.mailSend
+)
+
+
 
 module.exports = router
