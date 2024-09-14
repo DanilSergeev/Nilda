@@ -10,6 +10,7 @@ type AlertType = {
     text: string;
 };
 
+
 const AboutUsFeedBackComponents = () => {
     const [formData, setFormData] = useState({
         email: '',

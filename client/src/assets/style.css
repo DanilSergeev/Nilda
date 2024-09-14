@@ -36,7 +36,7 @@ hr {
     margin: 0;
 }
 
-.a-colorUnset{
+.a-colorUnset {
     color: unset;
     text-decoration: none;
 }
@@ -57,7 +57,7 @@ header {
     padding: 0 16px;
 }
 
-.text-preWrap{
+.text-preWrap {
     white-space: pre-wrap;
 }
 
@@ -290,8 +290,26 @@ h6 {
     color: rgb(109, 109, 109);
     font-size: 12px;
 }
+
 /* formCreateIdea */
-.formCreateIdea{
+.formCreateIdea {
     padding: 3vh 0;
     background-color: #19875420;
+}
+
+/* aboutUsSotial */
+.aboutUsSotialFlexBox {
+    display: flex;
+    justify-content: space-between;
+}
+
+.aboutUsSotialFlexBox div a svg {
+    height: 11vh;
+}
+
+.aboutUsSotialFlexBox div {
+    max-width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
