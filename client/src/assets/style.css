@@ -304,12 +304,81 @@ h6 {
 }
 
 .aboutUsSotialFlexBox div a svg {
-    height: 11vh;
+    height: 9vh;
 }
 
 .aboutUsSotialFlexBox div {
-    max-width: 50%;
+    width: 45%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
+}
+
+.aboutUsSotialFlexBox div a {
+    letter-spacing: 1.3px;
+    font-size: 20px;
+    margin-bottom: 2vh;
+    display: inline-block;
+    width: 100%;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(to right, red, blue, rgb(222, 222, 222)) 1;
+    animation: border-animation 3s infinite linear;
+}
+
+.aboutUsSotialFlexBox div a svg {
+    margin-right: 2vw;
+}
+
+@keyframes border-animation {
+    0% {
+        border-image: linear-gradient(to right, blue, var(--mainColorTwoLight), rgb(222, 222, 222)) 1;
+    }
+
+    33% {
+        border-image: linear-gradient(to right, rgb(222, 222, 222), blue, var(--mainColorTwoLight)) 1;
+    }
+
+    66% {
+        border-image: linear-gradient(to right, var(--mainColorTwoLight), rgb(222, 222, 222), blue) 1;
+    }
+
+    100% {
+        border-image: linear-gradient(to right, blue, var(--mainColorTwoLight), rgb(222, 222, 222)) 1;
+    }
+}
+
+.aboutUsWelcom {
+    background-color: rgb(219, 243, 255);
+    display: flex;
+    flex-direction: column-reverse;
+    height: 70vh;
+    background-size: cover;
+    background-position: center;
+    background-image: url('img/aboutUsPage.jpg');
+    position: relative;
+}
+.aboutUsWelcom::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: inherit;
+    background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.5));
+}
+
+.aboutUsWelcom div{
+    margin: auto;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+.aboutUsWelcom div p{
+    padding: 2vh 0;
+}
+.aboutUsWelcom button {
+    z-index: 100;
+    display: block;
+    margin: 0 auto;
+    /* margin-bottom: 16vh; */
 }

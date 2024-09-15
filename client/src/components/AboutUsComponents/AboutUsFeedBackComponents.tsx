@@ -74,7 +74,7 @@ const AboutUsFeedBackComponents = () => {
 
     return (
         <>
-            <section className="abputUsFeedBack wrapper">
+            <section className="abputUsFeedBack wrapper mb-3">
                 <h2>Обратная связь</h2>
                 <p>Поделитесь своим мыслями о книге</p>
                 <Form>
