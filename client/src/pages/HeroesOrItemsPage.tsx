@@ -1,18 +1,16 @@
 import { useParams } from 'react-router-dom';
 import DataItemService from '../services/dataItemService';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import CardsHomePage from '../components/GeneralComponents/card/CardsHomePage';
 import ImageLineHomeComponents from '../components/HomePage/ImageLineHomeComponents';
 import CarouselWithThumbnails from '../components/GeneralComponents/carousel/CarouselWithThumbnails/CarouselWithThumbnails';
-
-
 
 interface IDataItems {
     id: number,
     title: string,
     description: string,
     updatedAt: string,
-    countryId: number, 
+    countryId: number,
     imageOfItems: {
         id: number,
         url: string,
@@ -22,56 +20,70 @@ interface IDataItems {
 const HeroesOrItemsPage = () => {
     const { categoryId, id } = useParams();
     const [itemsData, setItemsData] = useState<IDataItems[]>([]);
-    const [itemSelected, setItemSelected] = useState<IDataItems | null>(null)
+    const [itemSelected, setItemSelected] = useState<IDataItems | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     const fetchDataItems = async () => {
-        switch (Number(categoryId)) {
-            case 1:
-                return await DataItemService.getItemsByHero();
-            case 2:
-                return await DataItemService.getItemsByItem();
-            default:
-                throw new Error('Несуществующая ветка');
+        try {
+            switch (Number(categoryId)) {
+                case 1:
+                    return await DataItemService.getItemsByHero();
+                case 2:
+                    return await DataItemService.getItemsByItem();
+                default:
+                    throw new Error('Несуществующая ветка');
+            }
+        } catch (error: any) {
+            setError(error.message || 'Ошибка при получении данных');
+            throw error;
         }
     };
 
-    const getItems = useCallback(async () => {
+    const fetchSelectedItem = async () => {
         try {
-            const response = await fetchDataItems();
-            setItemsData(response.data);
-        } catch (error) {
-            console.error(error);
+            return await DataItemService.getItem(Number(id));
+        } catch (error: any) {
+            setError(error.message || 'Ошибка при получении данных элемента');
+            throw error;
         }
-    }, [categoryId]);
-    
-    const selectedHero = useCallback(async () => {
-        try {
-            const response = await DataItemService.getItem(Number(id));
-            setItemSelected(response.data);
-        } catch (error) {
-            console.error(error);
-        }
-    }, [id]);
-    useEffect(() => {
-        getItems()
-        selectedHero()
-    }, [categoryId, id, getItems, selectedHero])
+    };
 
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                const [itemsResponse, selectedItemResponse] = await Promise.all([
+                    fetchDataItems(),
+                    fetchSelectedItem(),
+                ]);
+
+                setItemsData(itemsResponse.data);
+                setItemSelected(selectedItemResponse.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        loadData();
+    }, [categoryId, id]); 
 
     return (
-        <main className='heroesOrItemsPage'>
+        <main className="heroesOrItemsPage">
+            {error && <p className="error-message">{error}</p>}
             <CarouselWithThumbnails items={itemSelected ? [itemSelected] : []} />
-            
-            <ImageLineHomeComponents/>
-
-            <section className='wrapper carouselHome mt-3 mb-3'>
-                {itemsData.map(item => (
-                    <CardsHomePage key={item.id} imgSrc={process.env.REACT_APP_GET_IMAGE_URL + item.imageOfItems[0]?.url}
-                    title = { item.title } text = { item.description } link={`http://localhost:3000/itemsById/${categoryId}/id/${item.id}`} />
+            <ImageLineHomeComponents />
+            <section className="wrapper carouselHome mt-3 mb-3">
+                {itemsData.map((item) => (
+                    <CardsHomePage
+                        key={item.id}
+                        imgSrc={`${process.env.REACT_APP_GET_IMAGE_URL}${item.imageOfItems[0]?.url}`}
+                        title={item.title}
+                        text={item.description}
+                        link={`http://localhost:3000/itemsById/${categoryId}/id/${item.id}`}
+                    />
                 ))}
             </section>
         </main>
-    )
-}
+    );
+};
 
-export default HeroesOrItemsPage
+export default HeroesOrItemsPage;
