@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import DataItemService from '../services/dataItemService';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import CardsHomePage from '../components/GeneralComponents/card/CardsHomePage';
 import ImageLineHomeComponents from '../components/HomePage/ImageLineHomeComponents';
 import CarouselWithThumbnails from '../components/GeneralComponents/carousel/CarouselWithThumbnails/CarouselWithThumbnails';
@@ -23,7 +23,7 @@ const HeroesOrItemsPage = () => {
     const [itemSelected, setItemSelected] = useState<IDataItems | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchDataItems = async () => {
+    const fetchDataItems = useCallback(async () => {
         try {
             switch (Number(categoryId)) {
                 case 1:
@@ -31,22 +31,22 @@ const HeroesOrItemsPage = () => {
                 case 2:
                     return await DataItemService.getItemsByItem();
                 default:
-                    throw new Error('Несуществующая ветка');
+                    throw new Error('Несуществующая категория');
             }
         } catch (error: any) {
             setError(error.message || 'Ошибка при получении данных');
             throw error;
         }
-    };
+    }, [categoryId]);
 
-    const fetchSelectedItem = async () => {
+    const fetchSelectedItem = useCallback(async () => {
         try {
             return await DataItemService.getItem(Number(id));
         } catch (error: any) {
             setError(error.message || 'Ошибка при получении данных элемента');
             throw error;
         }
-    };
+    }, [id]);
 
     useEffect(() => {
         const loadData = async () => {
@@ -64,13 +64,16 @@ const HeroesOrItemsPage = () => {
         };
 
         loadData();
-    }, [categoryId, id]); 
+    }, [fetchDataItems, fetchSelectedItem]); 
 
     return (
         <main className="heroesOrItemsPage">
             {error && <p className="error-message">{error}</p>}
+
             <CarouselWithThumbnails items={itemSelected ? [itemSelected] : []} />
+
             <ImageLineHomeComponents />
+
             <section className="wrapper carouselHome mt-3 mb-3">
                 {itemsData.map((item) => (
                     <CardsHomePage
