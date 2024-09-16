@@ -1,18 +1,12 @@
 import { useParams } from 'react-router-dom';
 import DataItemService from '../services/dataItemService';
-// import AuxiliaryDataService from '../services/auxiliaryDataService';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import CardsHomePage from '../components/GeneralComponents/card/CardsHomePage';
 import ImageLineHomeComponents from '../components/HomePage/ImageLineHomeComponents';
 import CarouselWithThumbnails from '../components/GeneralComponents/carousel/CarouselWithThumbnails/CarouselWithThumbnails';
 
 
-// interface Icategory {
-//     data: {
-//         id: number,
-//         name: string
-//     }
-// }
+
 interface IDataItems {
     id: number,
     title: string,
@@ -27,7 +21,6 @@ interface IDataItems {
 
 const HeroesOrItemsPage = () => {
     const { categoryId, id } = useParams();
-    // const [category, setCategory] = useState<string | null>(null);
     const [itemsData, setItemsData] = useState<IDataItems[]>([]);
     const [itemSelected, setItemSelected] = useState<IDataItems | null>(null)
 
@@ -41,39 +34,28 @@ const HeroesOrItemsPage = () => {
                 throw new Error('Несуществующая ветка');
         }
     };
-    // const getCategory = async () => {
-    //     try {
-    //         const response: Icategory | [] = await AuxiliaryDataService.getCategory(Number(categoryId))
-    //         setCategory(response.data.name)
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-    // }
 
-    const getItems = async () => {
+    const getItems = useCallback(async () => {
         try {
-            const response = await fetchDataItems()
-            setItemsData(response.data)
+            const response = await fetchDataItems();
+            setItemsData(response.data);
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
-    }
-
-
-    const selectedHero = async () => {
+    }, [categoryId]);
+    
+    const selectedHero = useCallback(async () => {
         try {
             const response = await DataItemService.getItem(Number(id));
-            setItemSelected(response.data)
+            setItemSelected(response.data);
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
-    }
-
+    }, [id]);
     useEffect(() => {
-        // getCategory()
         getItems()
         selectedHero()
-    }, [categoryId, id])
+    }, [categoryId, id, getItems, selectedHero])
 
 
     return (
