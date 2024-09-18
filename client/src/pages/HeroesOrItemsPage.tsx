@@ -68,7 +68,7 @@ const HeroesOrItemsPage = () => {
 
     return (
         <main className="heroesOrItemsPage">
-            {error && <p className="error-message">{error}</p>}
+            {error && <p>{error}</p>}
             <CarouselWithThumbnails items={itemSelected ? [itemSelected] : []} />
             <ImageLineHomeComponents />
             <section className="wrapper carouselHome mt-3 mb-3">
