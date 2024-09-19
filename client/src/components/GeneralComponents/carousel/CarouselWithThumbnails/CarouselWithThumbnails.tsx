@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import classes from './CarouselWithThumbnails.module.css';
 
 interface ImageItem {
@@ -19,10 +19,10 @@ interface CarouselWithThumbnailsProps {
   items: CarouselItem[] | null;
 }
 
-const CarouselWithThumbnails: React.FC<CarouselWithThumbnailsProps> = ({ items }) => {
+const CarouselWithThumbnails: FC<CarouselWithThumbnailsProps> = ({ items }) => {
   const itemsList = items || [];
 
-  const [activeIndex, setActiveIndex] = React.useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   
   const handleRadioChange = (index: number) => {

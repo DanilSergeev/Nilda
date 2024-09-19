@@ -68,12 +68,7 @@ const HeroesOrItemsPage = () => {
 
     return (
         <main className="heroesOrItemsPage">
-<<<<<<< HEAD
             {error && <p>{error}</p>}
-=======
-            {error && <p>{error}</p>}
-
->>>>>>> 697eaa18b122cf35ea2d843d94d5e65afd91c747
             <CarouselWithThumbnails items={itemSelected ? [itemSelected] : []} />
 
             <ImageLineHomeComponents />
@@ -88,7 +83,7 @@ const HeroesOrItemsPage = () => {
                         link={`http://localhost:3000/itemsById/${categoryId}/id/${item.id}`}
                     />
                 ))}
-            </section>
+            </section>  
         </main>
     );
 };
