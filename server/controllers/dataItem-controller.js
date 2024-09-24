@@ -37,7 +37,7 @@ class DataItemController {
     }
     async creatItem(req, res, next) {
         try {
-            const { title, description = "", categoryId = 1, countryId } = req.body;
+            const { title, description = "", categoryId = 1, countryId = 1 } = req.body;
 
             if (!title) {
                 return next(ApiError.BadRequest("title не передан"));

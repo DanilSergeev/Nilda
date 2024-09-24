@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import CardsHomePage from '../components/GeneralComponents/card/CardsHomePage';
 import ImageLineHomeComponents from '../components/HomePage/ImageLineHomeComponents';
 import CarouselWithThumbnails from '../components/GeneralComponents/carousel/CarouselWithThumbnails/CarouselWithThumbnails';
+import FormCreateHeroesOrItemsComponent from '../components/HeroesOrItemsComponents/FormCreateHeroesOrItemsComponent';
 
 interface IDataItems {
     id: number,
@@ -64,11 +65,23 @@ const HeroesOrItemsPage = () => {
         };
 
         loadData();
-    }, [fetchDataItems, fetchSelectedItem]); 
+    }, [fetchDataItems, fetchSelectedItem]);
+
+
+
+
+
+
+
+
+
+
 
     return (
         <main className="heroesOrItemsPage">
             {error && <p>{error}</p>}
+
+
             <CarouselWithThumbnails items={itemSelected ? [itemSelected] : []} />
 
             <ImageLineHomeComponents />
@@ -83,7 +96,8 @@ const HeroesOrItemsPage = () => {
                         link={`http://localhost:3000/itemsById/${categoryId}/id/${item.id}`}
                     />
                 ))}
-            </section>  
+            </section>
+            <FormCreateHeroesOrItemsComponent  />
         </main>
     );
 };

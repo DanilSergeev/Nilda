@@ -19,9 +19,9 @@ const FormCreateIdeasComponent: React.FC<FormCreateIdeasProps> = ({ onSubmit }) 
     };
 
     return (
-        <section className='formCreateIdea  mb-5'>
+        <section className='formCreateIdea mb-5'>
             <Form className='wrapper'>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Group className="mb-3" >
                     <Form.Label>Введите загаловок</Form.Label>
                     <Form.Control
                         maxLength={255}
@@ -30,7 +30,7 @@ const FormCreateIdeasComponent: React.FC<FormCreateIdeasProps> = ({ onSubmit }) 
                         placeholder="Введите загаловок"
                     />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                <Form.Group className="mb-3" >
                     <Form.Label>Введите описание</Form.Label>
                     <Form.Control
                         value={text}

@@ -58,7 +58,7 @@ const CarouselWithThumbnails: FC<CarouselWithThumbnailsProps> = ({ items }) => {
                     </div>
                     <figcaption>
                       {item.description}
-                      <span className={classes.credit}>Photo: {item.title}</span>
+                      <span className={classes.credit}>{item.title}</span>
                     </figcaption>
                   </figure>
                 </li>

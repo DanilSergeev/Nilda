@@ -251,7 +251,6 @@ h6 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-row-gap: 2vh;
-    /* justify-items: center; */
 }
 
 /* .IdeasPage */

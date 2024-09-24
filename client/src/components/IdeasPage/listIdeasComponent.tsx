@@ -67,7 +67,7 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDe
     <section className='listIdeas mb-4'>
       <div className='wrapper mb-4'>
         <div className='searchIdeas mb-3'>
-          <Form.Select defaultValue={"0"} aria-label="Default select example" onChange={handleSortChange}>
+          <Form.Select defaultValue={"0"} aria-label="Default select" onChange={handleSortChange}>
             <option value="" disabled>Выберите сортировку</option>
             <option value="1">Заголовок</option>
             <option value="2">Текст</option>
