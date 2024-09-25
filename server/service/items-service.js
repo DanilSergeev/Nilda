@@ -40,7 +40,6 @@ class ItemsService {
         if (checkItem) {
             throw ApiError.BadRequest(400, `Такой заголовок существует: ${title}`);
         }
-
         const newItem = await Items.create({
             title,
             description,
@@ -48,9 +47,16 @@ class ItemsService {
             countryId,
         });
 
-
-        if (images && images.img.length != 0) {
-            const imageArray = Array.isArray(images.img) ? images.img : [images.img];
+        console.log('\n\n\n',images)
+        if ((images && (images.file || images.img)) ) {
+            console.log("firstfirstfirstfirstfirstfirstfirstfirst")
+            // const imageArray = Array.isArray(images.img) ? images.img : [images.img];
+            let imageArray;
+            if (images.file) {
+                imageArray = [images.file];
+            } else {
+                imageArray = images.img;
+            }
             const imageInstances = await Promise.all(
 
                 imageArray.map(async (img) => {
@@ -66,6 +72,7 @@ class ItemsService {
                     return ImageOfItem.create({ url: fileName });
                 })
             );
+
             await newItem.addImageOfItems(imageInstances);
         }
 

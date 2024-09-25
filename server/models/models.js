@@ -44,11 +44,11 @@ const ItemImages = sequelize.define('itemImages', {
 
 
 
-Items.belongsToMany(ImageOfItem, { through: ItemImages, foreignKey: 'itemId', timestamps:false });
-ImageOfItem.belongsToMany(Items, { through: ItemImages, foreignKey: 'imageOfItemId',timestamps:false });
+Items.belongsToMany(ImageOfItem, { onDelete: 'CASCADE', through: ItemImages, foreignKey: 'itemId', timestamps:false });
+ImageOfItem.belongsToMany(Items, { onDelete: 'CASCADE', through: ItemImages, foreignKey: 'imageOfItemId',timestamps:false });
 
-Items.belongsTo(Category, { foreignKey: 'categoryId' });
-Items.belongsTo(Country, { foreignKey: 'countryId' });
+Items.belongsTo(Category, { onDelete: 'CASCADE', foreignKey: 'categoryId' });
+Items.belongsTo(Country, { onDelete: 'CASCADE', foreignKey: 'countryId' });
 
 
 

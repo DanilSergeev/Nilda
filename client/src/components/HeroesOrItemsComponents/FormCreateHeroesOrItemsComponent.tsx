@@ -63,7 +63,7 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
             formData.append("categoryId", inputData.category.toString())
             formData.append("countryId", inputData.country.toString())
             formData.append("file", inputData.file)
-
+            
 
             const res = await DataItemService.creatItem(
                 formData
@@ -106,12 +106,14 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
 
                 </Form.Select>
 
-                <Form.Select onChange={(e) => setInputData(prev => ({ ...prev, countrys: Number(e.target.value) }))} className='mb-3' defaultValue={""} aria-label="Default select" >
+                <Form.Select onChange={(e) => setInputData(prev => ({ ...prev, country: Number(e.target.value) }))} className='mb-3' defaultValue={""} aria-label="Default select" >
                     <option value="" disabled>Выберите страну</option>
                     {countrys.map((item) => (
                         <option key={item.id} value={item.id}>{item.name}</option>
                     ))}
                 </Form.Select>
+
+
 
                 <Form.Group className="mb-3" >
                     <Form.Label>Введите описание</Form.Label>

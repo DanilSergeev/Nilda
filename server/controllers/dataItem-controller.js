@@ -38,7 +38,6 @@ class DataItemController {
     async creatItem(req, res, next) {
         try {
             const { title, description = "", categoryId = 1, countryId = 1 } = req.body;
-
             if (!title) {
                 return next(ApiError.BadRequest("title не передан"));
             }
@@ -51,14 +50,13 @@ class DataItemController {
             if (!categoryId) {
                 return next(ApiError.BadRequest("categoryId не передан"));
             }
-    
+
             let images = req.files;
 
             if (!images || images.length === 0) {
                 return next(ApiError.BadRequest("Изображение не передано"));
             }
-    
-            const data = await ItemsService.createItem(title, description, categoryId, countryId, images);
+            const data = await ItemsService.createItem(title, description, Number(categoryId), Number(countryId), images);
             res.json(data);
         } catch (error) {
             next(error)
