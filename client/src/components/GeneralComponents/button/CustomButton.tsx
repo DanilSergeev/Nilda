@@ -21,7 +21,7 @@ const CustomButton: FC<IButton> = ({ children, themeColor, ...props }) => {
     }
 
     return (
-        <button {...props} className={`CustomButton ${thisColor}`}>
+        <button {...props} className={`CustomButton ${thisColor}  ${props.disabled ? 'CustomButtonDisabled' : ''}`}>
             {children}
         </button>
     );

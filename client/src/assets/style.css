@@ -95,12 +95,77 @@ header button {
     padding-bottom: 2vh;
 }
 
+
+
+.line {
+    height: 280px;
+    background-size: cover;
+    background-image: url(../assets/img/lineImage.png);
+    border-bottom: 8px solid var(--mainColorTwoLight);
+    overflow: hidden;
+    position: relative;
+}
+
+.line::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1;
+}
+
+.line:hover::before {
+    opacity: 1;
+}
+
+.line div {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+}
+.line div h1{
+    font-size: 40px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.line div p{
+    letter-spacing: 1px;
+    font-size: 16px;
+    line-height: 28px;
+    width: 30%;
+}
+
+
+
+
+
+
+
+
+
+
+
 .CustomButton {
     padding: 6px 20px;
     border-radius: 12px;
     border: unset;
     color: white;
 
+}
+.CustomButtonDisabled{
+    opacity: 0.5
+}
+.CustomButtonDisabled:hover {
+    cursor: not-allowed; 
 }
 
 .CustomButtonGreen {

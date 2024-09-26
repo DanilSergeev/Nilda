@@ -76,6 +76,13 @@ const IdeasPage: React.FC = () => {
         setIdeaTargetData(data.data)
     };
 
+    useEffect(() => {
+        if (alertSetting.show) {
+          setTimeout(() => {
+            setAlertSetting(prev => ({ ...prev, show: false }));
+          }, 5000);
+        }
+      }, [alertSetting.show]);
 
     return (
         <>
