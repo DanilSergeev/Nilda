@@ -114,7 +114,6 @@ header button {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
-    z-index: 1;
 }
 
 .line:hover::before {
@@ -123,7 +122,6 @@ header button {
 
 .line div {
     position: relative;
-    z-index: 1;
     color: #fff;
     text-align: center;
     display: flex;

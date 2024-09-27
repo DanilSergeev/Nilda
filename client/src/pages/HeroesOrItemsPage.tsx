@@ -5,7 +5,6 @@ import CardsHomePage from '../components/GeneralComponents/card/CardsHomePage';
 import CarouselWithThumbnails from '../components/GeneralComponents/carousel/CarouselWithThumbnails/CarouselWithThumbnails';
 import FormCreateHeroesOrItemsComponent from '../components/HeroesOrItemsComponents/FormCreateHeroesOrItemsComponent';
 import CommonLine from '../components/GeneralComponents/line/CommonLine';
-import AuxiliaryDataServic from '../services/auxiliaryDataService';
 
 interface IDataItems {
     id: number,
