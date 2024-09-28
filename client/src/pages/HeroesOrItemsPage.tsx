@@ -5,18 +5,9 @@ import CardsHomePage from '../components/GeneralComponents/card/CardsHomePage';
 import CarouselWithThumbnails from '../components/GeneralComponents/carousel/CarouselWithThumbnails/CarouselWithThumbnails';
 import FormCreateHeroesOrItemsComponent from '../components/HeroesOrItemsComponents/FormCreateHeroesOrItemsComponent';
 import CommonLine from '../components/GeneralComponents/line/CommonLine';
+import { IDataItems } from '../models/IDataItems';
 
-interface IDataItems {
-    id: number,
-    title: string,
-    description: string,
-    updatedAt: string,
-    countryId: number,
-    imageOfItems: {
-        id: number,
-        url: string,
-    }[],
-}
+
 
 const HeroesOrItemsPage = () => {
     const { categoryId, id } = useParams();
@@ -83,7 +74,6 @@ const HeroesOrItemsPage = () => {
     return (
         <main className="heroesOrItemsPage">
             {error && <p>{error}</p>}
-
             {
                 itemSelected ? <CarouselWithThumbnails items={itemSelected ? [itemSelected] : []} /> : <></>
             }

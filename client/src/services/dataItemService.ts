@@ -1,10 +1,5 @@
 import $api from "../http";
 
-interface Iinput {
-    title: string,
-    text: string,
-}
-
 export default class DataItemService{
     static async getItems(){
         return $api.get("/items")

@@ -1,22 +1,10 @@
 import React, { FC, useState } from 'react';
 import classes from './CarouselWithThumbnails.module.css';
+import { IDataItems } from '../../../../models/IDataItems';
 
-interface ImageItem {
-  id: number;
-  url: string;
-}
-
-interface CarouselItem {
-  id: number;
-  title: string;
-  description: string;
-  countryId: number;
-  updatedAt: string;
-  imageOfItems: ImageItem[];
-}
 
 interface CarouselWithThumbnailsProps {
-  items: CarouselItem[] | null;
+  items: IDataItems[];
 }
 
 const CarouselWithThumbnails: FC<CarouselWithThumbnailsProps> = ({ items }) => {

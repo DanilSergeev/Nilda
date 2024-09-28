@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Form from 'react-bootstrap/Form';
 import CustomButton from '../GeneralComponents/button/CustomButton';
 import AuxiliaryDataServic from '../../services/auxiliaryDataService';
 import DataItemService from '../../services/dataItemService';
 import Alert from 'react-bootstrap/Alert';
+import { ICatrgoryOrCountry } from '../../models/ICatrgoryAndCountry';
 
-interface ICatrgoryAndCountry {
-  id: number;
-  name: string;
-}
 
 interface IDataInput {
   title: string;
   text: string;
   category: number;
   country: number;
-  file: any;
+  file: File | null;
 }
 
 const FormCreateHeroesOrItemsComponent: React.FC = () => {
@@ -27,8 +24,8 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
     file: null,
   });
 
-  const [categories, setCategories] = useState<ICatrgoryAndCountry[]>([]);
-  const [countries, setCountries] = useState<ICatrgoryAndCountry[]>([]);
+  const [categories, setCategories] = useState<ICatrgoryOrCountry[]>([]);
+  const [countries, setCountries] = useState<ICatrgoryOrCountry[]>([]);
   const [alertSetting, setAlertSetting] = useState({
     variant: 'success',
     show: false,
@@ -36,22 +33,26 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
   });
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
 
+  const validateInputData = useCallback(() => {
+    if (
+      inputData.category &&
+      inputData.country &&
+      inputData.title &&
+      inputData.text &&
+      inputData.file
+    ) {
+      setButtonIsDisabled(false);
+    } else {
+      setButtonIsDisabled(true);
+    }
+  }, [inputData]);
+
   useEffect(() => {
     fetchCategoriesAndCountries();
   }, []);
 
-  useEffect(() => {
-    if (alertSetting.show) {
-      setTimeout(() => {
-        setAlertSetting((prev) => ({ ...prev, show: false }));
-      }, 5000);
-    }
-  }, [alertSetting.show]);
 
-  useEffect(() => {
-    validateInputData();
-  }, [inputData]);
-
+  
   const fetchCategoriesAndCountries = async () => {
     try {
       const [categories, countries] = await Promise.all([
@@ -66,19 +67,6 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
     }
   };
 
-  const validateInputData = () => {
-    if (
-      inputData.category &&
-      inputData.country &&
-      inputData.title &&
-      inputData.text &&
-      inputData.file
-    ) {
-      setButtonIsDisabled(false);
-    } else {
-      setButtonIsDisabled(true);
-    }
-  };
 
   const sendDataCreate = async () => {
     setAlertSetting((prev) => ({ ...prev, show: false }));
@@ -88,7 +76,7 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
       formData.append('description', inputData.text);
       formData.append('categoryId', inputData.category.toString());
       formData.append('countryId', inputData.country.toString());
-      formData.append('file', inputData.file);
+      formData.append('file', inputData.file as File);
 
       await DataItemService.creatItem(formData);
       setAlertSetting((prev) => ({ ...prev, show: true, text: 'Объект успешно создан', variant: 'success' }));
@@ -102,6 +90,18 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
     }
   };
 
+
+  useEffect(() => {
+    if (alertSetting.show) {
+      setTimeout(() => {
+        setAlertSetting((prev) => ({ ...prev, show: false }));
+      }, 5000);
+    }
+  }, [alertSetting.show]);
+
+  useEffect(() => {
+    validateInputData();
+  }, [ validateInputData]);
 
   return (
     <>
