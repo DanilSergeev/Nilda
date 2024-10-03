@@ -3,16 +3,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import CustomButton from '../GeneralComponents/button/CustomButton';
 import { FC } from 'react';
 import Form from 'react-bootstrap/Form';
+import { IDataIdeas } from '../../models/IDataIdeas';
 
-interface ListIdea {
-  id: number;
-  title: string;
-  text: string;
-  updatedAt: string;
-}
+
 
 interface ListIdeasProps {
-  ideasData: ListIdea[];
+  ideasData: IDataIdeas[];
   onTargetClick: (id: number) => void;
   onDeleteClick: (id: number) => void;
 }
@@ -21,7 +17,7 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDe
   const [sortBy, setSortBy] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<boolean>(true);
-
+  
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(event.target.value);
   };
@@ -34,7 +30,7 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDe
     setSortDirection(prev => !prev);
   };
 
-  const sortIdeas = (ideas: ListIdea[]) => {
+  const sortIdeas = (ideas: IDataIdeas[]) => {
     return [...ideas].sort((a, b) => {
       let comparison = 0;
       switch (sortBy) {
@@ -54,7 +50,7 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDe
     });
   };
 
-  const filterIdeas = (ideas: ListIdea[]) => {
+  const filterIdeas = (ideas: IDataIdeas[]) => {
     return ideas.filter(idea =>
       idea.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       idea.text.toLowerCase().includes(searchTerm.toLowerCase())

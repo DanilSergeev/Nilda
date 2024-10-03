@@ -2,28 +2,21 @@ import React, { useEffect, useState } from 'react';
 import IdeasService from '../services/ideasService';
 import CustomButton from '../components/GeneralComponents/button/CustomButton';
 import MyModal from '../components/GeneralComponents/modal/MyModal';
-import Alert from 'react-bootstrap/Alert';
 import ListIdeasComponent from '../components/IdeasPage/listIdeasComponent';
 import FormCreateIdeasComponent from '../components/IdeasPage/FormCreateIdeasComponent';
 import TargetIdeaComponent from '../components/IdeasPage/TargetIdeaComponent';
-
-interface IDataIdeas {
-    id: number;
-    title: string;
-    text: string;
-    updatedAt: string;
-}
+import { IDataIdeas } from '../models/IDataIdeas';
+import { alertSlice } from '../store/reducers/AlertSlice';
+import { useAppDispatch } from '../hooks/redux';
+import CustomAlert from '../components/GeneralComponents/alert/CustomAlert';
 
 const IdeasPage: React.FC = () => {
+    const {showAlert,hideAlert} = alertSlice.actions
+    const dispatch = useAppDispatch()
     const [ideasData, setIdeasData] = useState<IDataIdeas[]>([]);
     const [ideaTargetData, setIdeaTargetData] = useState<IDataIdeas>();
     const [showModalDel, setShowModalDel] = useState(false);
     const [idForDeleted, setIdForDeleted] = useState<number | null>(null);
-    const [alertSetting, setAlertSetting] = useState({
-        variant: 'success',
-        show: false,
-        text: ''
-    });
 
     const funShowModalDel = (id: number) => {
         setShowModalDel(true);
@@ -33,10 +26,10 @@ const IdeasPage: React.FC = () => {
         try {
             const res = await IdeasService.delIdea(id);
             setIdeasData(prev => prev.filter((item) => item.id !== id));
-            setAlertSetting({ show: true, text: `${res.data}`, variant: 'success' });
+            dispatch(showAlert({ show: true, text: `${res.data}`, variant: 'success' }));
             setShowModalDel(false);
         } catch (error: any) {
-            setAlertSetting({ show: true, text: `Ошибка - ${error?.message}`, variant: 'danger' });
+            dispatch(showAlert({ show: true, text: `Ошибка - ${error?.message}`, variant: 'danger' }));
             console.error(error);
         }
     };
@@ -49,18 +42,18 @@ const IdeasPage: React.FC = () => {
         }
     };
     const sendDataCreate = async (title: string, text: string) => {
-        setAlertSetting(prev => ({ ...prev, show: false }));
+        dispatch(hideAlert());
         try {
             const res = await IdeasService.createIdea(title, text);
             console.log(res);
-            setAlertSetting(prev => ({ ...prev, show: true, text: `Идея успешно создана`, variant: "success" }));
+            dispatch(showAlert({show:true,  text: `Идея успешно создана`, variant: "success" }));
             setIdeasData(prev => ([...prev, { id: res.idea.id, title: res.idea.title, text: res.idea.text, updatedAt: res.idea.updatedAt }]));
         } catch (error: any) {
             console.error("Error object:", error);
             if (error?.response?.data?.message !== undefined) {
-                setAlertSetting(prev => ({ ...prev, show: true, text: `Ошибка - ${error?.response?.data?.message}`, variant: "danger" }));
+                dispatch(showAlert({show:true,  text: `Ошибка - ${error?.response?.data?.message}`, variant: "danger" }));
             } else {
-                setAlertSetting(prev => ({ ...prev, show: true, text: `Ошибка - ${error?.message}`, variant: "danger" }));
+                dispatch(showAlert({show:true,  text: `Ошибка - ${error?.message}`, variant: "danger" }));
             }
         }
     };
@@ -69,20 +62,10 @@ const IdeasPage: React.FC = () => {
         getIdeas();
     }, []);
 
-
-
     const featchDataTargetIdea = async (id: number) => {
         const data = await IdeasService.getIdea(id) as { data: IDataIdeas };
         setIdeaTargetData(data.data)
     };
-
-    useEffect(() => {
-        if (alertSetting.show) {
-          setTimeout(() => {
-            setAlertSetting(prev => ({ ...prev, show: false }));
-          }, 5000);
-        }
-      }, [alertSetting.show]);
 
     return (
         <>
@@ -101,9 +84,7 @@ const IdeasPage: React.FC = () => {
                     <CustomButton themeColor='Red' onClick={() => idForDeleted !== null && deletedIdeas(idForDeleted)}>Удалить</CustomButton>
                 </div>
             </MyModal>
-            <Alert show={alertSetting.show} variant={alertSetting.variant} onClick={() => setAlertSetting(prev => ({ ...prev, show: false }))}>
-                {alertSetting.text}
-            </Alert>
+            <CustomAlert/>
         </>
     );
 };

@@ -1,15 +1,11 @@
 import React from 'react';
+import { IDataIdeas } from '../../models/IDataIdeas';
 
 
 interface ITargetIdeaComponentProps {
-    ideaTargetData: IDataIdea | undefined;
+    ideaTargetData: IDataIdeas | undefined;
 }
-interface IDataIdea {
-    id: number;
-    title: string;
-    text: string;
-    updatedAt: string;
-}
+
 const TargetIdeaComponent: React.FC<ITargetIdeaComponentProps> = ({ ideaTargetData }) => {
     return (
         <section className='wrapper targetIdea mt-5 mb-5'>

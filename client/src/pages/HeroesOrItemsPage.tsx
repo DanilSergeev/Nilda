@@ -6,8 +6,7 @@ import CarouselWithThumbnails from '../components/GeneralComponents/carousel/Car
 import FormCreateHeroesOrItemsComponent from '../components/HeroesOrItemsComponents/FormCreateHeroesOrItemsComponent';
 import CommonLine from '../components/GeneralComponents/line/CommonLine';
 import { IDataItems } from '../models/IDataItems';
-
-
+import CustomAlert from '../components/GeneralComponents/alert/CustomAlert';
 
 const HeroesOrItemsPage = () => {
     const { categoryId, id } = useParams();
@@ -61,40 +60,31 @@ const HeroesOrItemsPage = () => {
         loadData();
     }, [fetchDataItems, fetchSelectedItem]);
 
-
-
-
-
-
-
-
-
-
-
     return (
-        <main className="heroesOrItemsPage">
-            {error && <p>{error}</p>}
-            {
-                itemSelected ? <CarouselWithThumbnails items={itemSelected ? [itemSelected] : []} /> : <></>
-            }
+        <>
+            <main className="heroesOrItemsPage">
+                {error && <p>{error}</p>}
+                {
+                    itemSelected ? <CarouselWithThumbnails items={itemSelected ? [itemSelected] : []} /> : <></>
+                }
 
-            <CommonLine title={`${categoryName}`} text='Просматривайте наш обширный каталог персонажей и предметов, каждый из которых имеет свою уникальную историю и цель' />
+                <CommonLine title={`${categoryName}`} text='Просматривайте наш обширный каталог персонажей и предметов, каждый из которых имеет свою уникальную историю и цель' />
 
-            <section className="wrapper carouselHome mt-3 mb-3">
-                {itemsData.map((item) => (
-                    <CardsHomePage
-                        key={item.id}
-                        imgSrc={`${process.env.REACT_APP_GET_IMAGE_URL}${item.imageOfItems[0]?.url}`}
-                        title={item.title}
-                        text={item.description}
-                        link={`http://localhost:3000/itemsById/${categoryId}/id/${item.id}`}
-                    />
-                ))}
-            </section>
-            <FormCreateHeroesOrItemsComponent />
-        </main>
-
+                <section className="wrapper carouselHome mt-3 mb-3">
+                    {itemsData.map((item) => (
+                        <CardsHomePage
+                            key={item.id}
+                            imgSrc={`${process.env.REACT_APP_GET_IMAGE_URL}${item.imageOfItems[0]?.url}`}
+                            title={item.title}
+                            text={item.description}
+                            link={`/itemsById/${categoryId}/id/${item.id}`}
+                        />
+                    ))}
+                </section>
+                <FormCreateHeroesOrItemsComponent />
+            </main>
+            <CustomAlert />
+        </>
     );
 };
-
 export default HeroesOrItemsPage;

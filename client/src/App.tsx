@@ -10,6 +10,8 @@ import NotFoundPage from './pages/NotFoundPage';
 import IdeasPage from './pages/IdeasPage';
 
 function App() {
+
+
   return (
     <BrowserRouter>
       <Header />
@@ -21,7 +23,7 @@ function App() {
         <Route path='*' element={<NotFoundPage/>}/>
 
       </Routes>
-      <Footer />
+      <Footer /> 
     </BrowserRouter>
   );
 }

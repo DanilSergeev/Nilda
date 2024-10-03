@@ -1,11 +1,13 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import AlertSlice from "./reducers/AlertSlice";
+
 
 const rootReducers = combineReducers({
-
+    AlertSlice,
 })
 export const setupStore= ()=>{
     return configureStore({
-        reducer: rootReducers
+        reducer: rootReducers,
     })
 }
 export type RootState = ReturnType<typeof rootReducers>

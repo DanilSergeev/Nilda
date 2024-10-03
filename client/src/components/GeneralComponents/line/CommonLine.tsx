@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 interface ILine{
-    title: string,
-    text: string,
+    title?: string,
+    text?: string,
 }
 
 const CommonLine: FC<ILine> = (  {title = "",  text = ""} ) => {
