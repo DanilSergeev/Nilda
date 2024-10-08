@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import AlertSlice from "./reducers/AlertSlice";
+import ModalSlice from "./reducers/ModalSlice";
 
 
 const rootReducers = combineReducers({
     AlertSlice,
+    ModalSlice
 })
 export const setupStore= ()=>{
     return configureStore({

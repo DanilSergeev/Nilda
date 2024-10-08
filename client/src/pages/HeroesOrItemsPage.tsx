@@ -67,9 +67,7 @@ const HeroesOrItemsPage = () => {
                 {
                     itemSelected ? <CarouselWithThumbnails items={itemSelected ? [itemSelected] : []} /> : <></>
                 }
-
                 <CommonLine title={`${categoryName}`} text='Просматривайте наш обширный каталог персонажей и предметов, каждый из которых имеет свою уникальную историю и цель' />
-
                 <section className="wrapper carouselHome mt-3 mb-3">
                     {itemsData.map((item) => (
                         <CardsHomePage

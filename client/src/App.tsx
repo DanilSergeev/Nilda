@@ -8,6 +8,8 @@ import AboutUsPage from './pages/AboutUsPage';
 import HeroesOrItemsPage from './pages/HeroesOrItemsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import IdeasPage from './pages/IdeasPage';
+import AuthPage from './pages/Authorization/AuthPage';
+import RegisterPage from './pages/Authorization/RegisterPage';
 
 function App() {
 
@@ -19,6 +21,8 @@ function App() {
         <Route path='/' element={<HomePage/>}/>
         <Route path='/aboutUs' element={<AboutUsPage/>}/>
         <Route path='/ideas' element={<IdeasPage/>}/>
+        <Route path='/auth' element={<AuthPage/>}/>
+        <Route path='/register' element={<RegisterPage/>}/>
         <Route path='/itemsById/:categoryId/id/:id' element={<HeroesOrItemsPage/>}/>
         <Route path='*' element={<NotFoundPage/>}/>
 
