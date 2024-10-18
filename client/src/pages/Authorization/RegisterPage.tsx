@@ -6,7 +6,8 @@ import CommonLine from '../../components/GeneralComponents/line/CommonLine';
 import { useState } from 'react';
 
 
-
+// to do
+// add dataAuth:name and file
 const RegisterPage = () => {
     const [dataAuth, setDataAuth] = useState({
         login: '',

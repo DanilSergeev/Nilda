@@ -14,7 +14,7 @@ export default class DataItemService{
         return $api.get(`/item/${id}`)
     }
     static async creatItem(formData:FormData){
-        return $api.post(`/creatItem/`, formData)
+        return $api.post(`/item/`, formData)
         .then((res:any)=>res.data)
     }
     static async updateItem(id:string, formData:FormData){
