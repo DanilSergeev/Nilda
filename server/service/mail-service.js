@@ -29,5 +29,20 @@ class MailService {
     return answer
   }
 
+  
+  async sendActivationMail(to, link) {
+    await this.transporter.sendMail({
+      from: process.env.MAIL_USER,
+      to,
+      subject: "Подтвердите почту",
+      html: `
+      <div>
+        <h1>Подтвердите почту</h1>
+        <a href="${link}">${link}</a>
+      </div>
+      `
+    })
+  }
+
 }
 module.exports = new MailService()
