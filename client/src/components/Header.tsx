@@ -29,6 +29,8 @@ const Header = () => {
                     <Link to="/ideas" onClick={()=>handleClose()} className='headerLink'>Идеи</Link>
                     <Link to="/itemsById/1/id/0" onClick={()=>handleClose()} className='headerLink'>Персонажи</Link>
                     <Link to="/itemsById/2/id/0" onClick={()=>handleClose()} className='headerLink'>Предметы</Link>
+                <hr />
+                    <Link to="/auth" onClick={()=>handleClose()} className='headerLink mt-2'>Авторизация</Link>
                 </Offcanvas.Body>
             </Offcanvas>
         </>

@@ -80,7 +80,7 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
   }, [validateInputData]);
 
   return (
-    <section className='mb-5'>
+    <section>
       <h2>Форма создания</h2>
       <Form className='wrapper'>
         <Form.Group className='mb-3'>
@@ -127,7 +127,7 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
             type='file'
           />
         </Form.Group>
-        <CustomButton disabled={buttonIsDisabled} type='button' onClick={sendDataCreate}>
+        <CustomButton disabled={buttonIsDisabled} onClick={sendDataCreate}>
           Создать
         </CustomButton>
       </Form>

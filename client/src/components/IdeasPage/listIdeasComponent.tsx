@@ -60,7 +60,7 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDe
   const sortedAndFilteredIdeas = filterIdeas(sortIdeas(ideasData));
 
   return (
-    <section className='listIdeas mb-4'>
+    <section className='listIdeas'>
       <div className='wrapper mb-4'>
         <div className='searchIdeas mb-3'>
           <Form.Select defaultValue={"0"} aria-label="Default select" onChange={handleSortChange}>

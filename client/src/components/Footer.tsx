@@ -1,7 +1,7 @@
 
 const Footer = () => {
     return (
-        <footer>
+        <footer >
             <section className="wrapper">
                 Copyright © 2024 - All rights reserved || Designed By: Danil
             </section>

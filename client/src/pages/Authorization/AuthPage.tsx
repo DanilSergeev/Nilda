@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 const AuthPage = () => {
     const [dataAuth, setDataAuth] = useState({
-        login: '',
+        email: '',
         password: '',
     })
 
@@ -23,10 +23,10 @@ const AuthPage = () => {
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Введите логин</Form.Label>
                             <Form.Control
-                                type="login"
+                                type="email"
                                 placeholder="Введите логин"
-                                value={dataAuth.login}
-                                onChange={e => setDataAuth(prev => ({ ...prev, login: e.target.value }))}
+                                value={dataAuth.email}
+                                onChange={e => setDataAuth(prev => ({ ...prev, email: e.target.value }))}
                             />
                         </Form.Group>
 
