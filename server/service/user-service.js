@@ -5,24 +5,34 @@ const mailService = require('./mail-service');
 const tokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
 const ApiError = require("../exceptions/api-error")
+const path = require("path");
 
 class UserService {
-    async registration(email, password, name, role = "USER") {
+    async registration(email, password, name, role = "USER", image) {
         const candidate = await User.findOne({ where: { email } })
         if (candidate) {
             throw ApiError.BadRequest(`Пользователь с таким email существует - ${email}`)
         }
+        if (!!image) {
+            const fileName = uuid.v4() + ".jpg";
+            const filePath = path.resolve(__dirname, "..", "static", fileName);
+            try {
+                await image.file.mv(filePath);
+                image = fileName
+            } catch (error) {
+                throw new Error(`Ошибка при сохранении изображения: ${error.message}`);
+            }
+        }
         const hashPassword = await bcrypt.hash(password, 3)
         const activationLink = uuid.v4()
-        const user = await User.create({ email, name, password: hashPassword, role, activationLink })
+        const user = await User.create({ email, name, password: hashPassword, file: image, role, activationLink })
         await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`)
         const userDto = new UserDto(user)
         const tokens = tokenService.generateTokens({ ...userDto })
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
         return { ...tokens, user: userDto }
     }
-// to do
-// add file uploader
+    
     async login(email, password) {
         const user = await User.findOne({ where: { email } })
         if (!user) {
@@ -70,7 +80,7 @@ class UserService {
         return usersData
     }
     async updateUser(id, role, name) {
-// add file uploder
+        // add file uploder
 
         const userData = await User.update(
             { role, name },

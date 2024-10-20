@@ -82,7 +82,7 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
   return (
     <section>
       <h2>Форма создания</h2>
-      <Form className='wrapper'>
+      <Form onSubmit={(e) => e.preventDefault()} className='wrapper'>
         <Form.Group className='mb-3'>
           <Form.Label>Введите название</Form.Label>
           <Form.Control

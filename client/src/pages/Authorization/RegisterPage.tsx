@@ -20,8 +20,18 @@ const RegisterPage = () => {
         name: '',
         password: '',
         rePassword: '',
-        file: null,
+        file: undefined,
     })
+
+    const handleChange = (field: keyof IUser) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDataAuth(prev => ({ ...prev, [field]: e.target.value }));
+    };
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : undefined;
+        setDataAuth(prev => ({ ...prev, file }));
+    };
+
+
     const checkInputData = useCallback(() => {
         if (
             dataAuth.email &&
@@ -35,11 +45,24 @@ const RegisterPage = () => {
         }
     }, [dataAuth.email, dataAuth.name, dataAuth.password, dataAuth.rePassword]);
 
+    const validateInputDataIsTrue = () => {
+        const errors = [];
+        if (dataAuth.password !== dataAuth.rePassword) {
+            errors.push('пароли не совпадают');
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dataAuth.email)) {
+            errors.push('не валидный email');
+        }
+        if (errors.length > 0) {
+            dispatch(showAlert({ show: true, text: `Ошибка при валидации - ${errors.join(', ')}`, variant: 'danger' }));
+            return false;
+        }
+
+        return true
+    }
 
     const sendDataRegister = async () => {
-        if (dataAuth.password !== dataAuth.rePassword) {
-            return dispatch(showAlert({ show: true, text: `Ошибка при валидации - пароли не совподают`, variant: 'danger' }))
-        }
+        if (!validateInputDataIsTrue()) return;
         dispatch(hideAlert())
         try {
             const formData = new FormData();
@@ -49,7 +72,7 @@ const RegisterPage = () => {
             formData.append('file', dataAuth.file as File);
 
             await AuthService.register(formData);
-            dispatch(showAlert({ show: true, text: 'Объект успешно создан', variant: 'success' }))
+            dispatch(showAlert({ show: true, text: 'Подтвердите свою почту', variant: 'success' }))
         } catch (error: any) {
             console.error('Error object:', error);
             if (error?.response?.data?.message !== undefined) {
@@ -65,18 +88,21 @@ const RegisterPage = () => {
         checkInputData();
     }, [checkInputData]);
 
+
+
+
     return (
         <>
             <main className="AuthPage ">
                 <CommonLine title='Регистрация' text='Добро пожаловать в форму регистрации' />
                 <div className='wrapper mt-5'>
-                    <Form>
+                    <Form onSubmit={(e) => e.preventDefault()}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Введите вашу почту</Form.Label>
                             <Form.Control
                                 type="email"
                                 value={dataAuth.email}
-                                onChange={e => setDataAuth(prev => ({ ...prev, email: e.target.value }))}
+                                onChange={handleChange("email")}
                                 placeholder="Введите вашу почту"
                             />
                         </Form.Group>
@@ -84,9 +110,10 @@ const RegisterPage = () => {
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Введите ник</Form.Label>
                             <Form.Control
+                                maxLength={32}
                                 type="text"
                                 value={dataAuth.name}
-                                onChange={e => setDataAuth(prev => ({ ...prev, name: e.target.value }))}
+                                onChange={handleChange("name")}
                                 placeholder="Введите ник"
                             />
                         </Form.Group>
@@ -94,27 +121,29 @@ const RegisterPage = () => {
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Введите пароль</Form.Label>
                             <Form.Control
+                                maxLength={32}
                                 type="password"
                                 placeholder="Введите пароль"
                                 value={dataAuth.password}
-                                onChange={e => setDataAuth(prev => ({ ...prev, password: e.target.value }))}
+                                onChange={handleChange("password")}
                             />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Повторите пароль</Form.Label>
                             <Form.Control
+                                maxLength={32}
                                 type="password"
                                 placeholder="Повторите пароль"
                                 value={dataAuth.rePassword}
-                                onChange={e => setDataAuth(prev => ({ ...prev, rePassword: e.target.value }))}
+                                onChange={handleChange("rePassword")}
                             />
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
                             <Form.Label>Вставте фото (не обязательно): </Form.Label>
                             <Form.Control
-                                onChange={(e: any) => setDataAuth((prev) => ({ ...prev, file: e.target.files[0] }))}
+                                onChange={handleFileChange}
                                 type='file'
                             />
                         </Form.Group>

@@ -47,10 +47,7 @@ class ItemsService {
             countryId,
         });
 
-        console.log('\n\n\n',images)
         if ((images && (images.file || images.img)) ) {
-            console.log("firstfirstfirstfirstfirstfirstfirstfirst")
-            // const imageArray = Array.isArray(images.img) ? images.img : [images.img];
             let imageArray;
             if (images.file) {
                 imageArray = [images.file];

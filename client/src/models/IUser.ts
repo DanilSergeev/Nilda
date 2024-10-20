@@ -3,5 +3,5 @@ export interface IUser {
     name: string;
     password: string;
     rePassword: string;
-    file: File | null;
+    file: File | undefined;
   }
