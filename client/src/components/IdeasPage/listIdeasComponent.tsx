@@ -4,6 +4,7 @@ import CustomButton from '../GeneralComponents/button/CustomButton';
 import { FC } from 'react';
 import Form from 'react-bootstrap/Form';
 import { IDataIdeas } from '../../models/IDataIdeas';
+import { useAppSelector } from '../../hooks/redux';
 
 
 
@@ -14,10 +15,12 @@ interface ListIdeasProps {
 }
 
 const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDeleteClick }) => {
+  const authUser = useAppSelector(state => state.AuthSlice)
+
   const [sortBy, setSortBy] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<boolean>(true);
-  
+
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(event.target.value);
   };
@@ -96,7 +99,12 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick, onDe
               </div>
               <div className='ButtonsListIdeas'>
                 <CustomButton onClick={() => onTargetClick(item.id)}>Подробнее</CustomButton>
-                <CustomButton themeColor='Red' onClick={() => onDeleteClick(item.id)}>Удалить</CustomButton>
+                {
+                  authUser.role === "ADMIN" ?
+                    <CustomButton themeColor='Red' onClick={() => onDeleteClick(item.id)}>Удалить</CustomButton>
+                    :
+                    <></>
+                }
               </div>
             </ListGroup.Item>
           ))

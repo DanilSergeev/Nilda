@@ -13,10 +13,10 @@ class UserController {
             if(req.files){
                 image = req.files;
             }
-            const { email, password, name, role } = req.body 
+            const { email, password, name } = req.body 
             
 
-            const userData = await userService.registration(email, password, name, role, image)
+            const userData = await userService.registration(email, password, name, image)
             res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })//secure: true
             return res.json(userData)
         } catch (error) {

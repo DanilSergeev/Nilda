@@ -8,7 +8,7 @@ const ApiError = require("../exceptions/api-error")
 const path = require("path");
 
 class UserService {
-    async registration(email, password, name, role = "USER", image) {
+    async registration(email, password, name, image) {
         const candidate = await User.findOne({ where: { email } })
         if (candidate) {
             throw ApiError.BadRequest(`Пользователь с таким email существует - ${email}`)
@@ -25,7 +25,7 @@ class UserService {
         }
         const hashPassword = await bcrypt.hash(password, 3)
         const activationLink = uuid.v4()
-        const user = await User.create({ email, name, password: hashPassword, file: image, role, activationLink })
+        const user = await User.create({ email, name, password: hashPassword, file: image, role: "USER", activationLink })
         await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`)
         const userDto = new UserDto(user)
         const tokens = tokenService.generateTokens({ ...userDto })

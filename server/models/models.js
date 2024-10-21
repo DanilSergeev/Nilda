@@ -12,14 +12,10 @@ const User = sequelize.define('user', {
     isActivated: { type: DataTypes.BOOLEAN, defaultValue: false },
     activationLink: { type: DataTypes.STRING }
 }, { timestamps: false })
-// to do: 
-// add activationLink
-// add noimage
-// 
-// 
+
 const TokenSchema = sequelize.define('tokenSchema', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    refreshToken: { type: DataTypes.STRING },
+    refreshToken: { type: DataTypes.TEXT },
 }, { timestamps: false })
 
 

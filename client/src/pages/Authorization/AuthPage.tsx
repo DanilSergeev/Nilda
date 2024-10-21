@@ -1,12 +1,13 @@
 import CustomAlert from '../../components/GeneralComponents/alert/CustomAlert';
 import Form from 'react-bootstrap/Form';
 import CustomButton from '../../components/GeneralComponents/button/CustomButton';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import CommonLine from '../../components/GeneralComponents/line/CommonLine';
 import { useState } from 'react';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { alertSlice } from '../../store/reducers/AlertSlice';
 import AuthService from '../../services/authService';
+import { authSlice } from '../../store/reducers/AuthSlice';
 
 
 
@@ -17,7 +18,9 @@ interface IUser {
 
 const AuthPage = () => {
     const dispatch = useAppDispatch()
+    const authUser = useAppSelector(state => state.AuthSlice)
     const { showAlert, hideAlert } = alertSlice.actions
+    const { setAuthUser } = authSlice.actions
 
     const [dataAuth, setDataAuth] = useState({
         email: '',
@@ -34,9 +37,11 @@ const AuthPage = () => {
             const formData = new FormData();
             formData.append('email', dataAuth.email);
             formData.append('password', dataAuth.password);
-
             const response = await AuthService.login(formData);
-            console.log(response.user)//
+            response.user.isActivated?
+            dispatch(setAuthUser(response))
+            :
+            dispatch(showAlert({ show: true, text: `Подтвердите почту - ${authUser.email}`, variant: 'info' }))
         } catch (error: any) {
             console.error('Error object:', error);
             if (error?.response?.data?.message !== undefined) {
@@ -47,7 +52,9 @@ const AuthPage = () => {
         }
     }
 
-
+    if (authUser.isAuth && authUser.isActivated) {
+        return <Navigate to="/" replace />;
+    }
 
     return (
         <>

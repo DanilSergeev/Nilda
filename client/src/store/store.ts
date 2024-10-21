@@ -1,11 +1,13 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import AlertSlice from "./reducers/AlertSlice";
 import ModalSlice from "./reducers/ModalSlice";
+import AuthSlice from "./reducers/AuthSlice";
 
 
 const rootReducers = combineReducers({
     AlertSlice,
-    ModalSlice
+    ModalSlice,
+    AuthSlice
 })
 export const setupStore= ()=>{
     return configureStore({

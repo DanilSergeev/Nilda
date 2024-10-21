@@ -7,11 +7,12 @@ import FormCreateIdeasComponent from '../components/IdeasPage/FormCreateIdeasCom
 import TargetIdeaComponent from '../components/IdeasPage/TargetIdeaComponent';
 import { IDataIdeas } from '../models/IDataIdeas';
 import { alertSlice } from '../store/reducers/AlertSlice';
-import { useAppDispatch } from '../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import CustomAlert from '../components/GeneralComponents/alert/CustomAlert';
 import { modalSlice } from '../store/reducers/ModalSlice';
 
 const IdeasPage: React.FC = () => {
+    const authUser = useAppSelector(state => state.AuthSlice)
     const { showAlert, hideAlert } = alertSlice.actions
     const { showModal, hideModal } = modalSlice.actions
     const dispatch = useAppDispatch()
@@ -76,7 +77,12 @@ const IdeasPage: React.FC = () => {
         <>
             <main>
                 <TargetIdeaComponent ideaTargetData={ideaTargetData} />
-                <FormCreateIdeasComponent onSubmit={sendDataCreate} />
+                {
+                    authUser.role === "ADMIN" ?
+                        <FormCreateIdeasComponent onSubmit={sendDataCreate} />
+                        :
+                        <></>
+                }
                 <ListIdeasComponent ideasData={ideasData} onTargetClick={featchDataTargetIdea} onDeleteClick={funShowModalDel} />
             </main>
             <MyModal>

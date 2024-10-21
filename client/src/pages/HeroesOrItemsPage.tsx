@@ -7,8 +7,12 @@ import FormCreateHeroesOrItemsComponent from '../components/HeroesOrItemsCompone
 import CommonLine from '../components/GeneralComponents/line/CommonLine';
 import { IDataItems } from '../models/IDataItems';
 import CustomAlert from '../components/GeneralComponents/alert/CustomAlert';
+import {  useAppSelector } from '../hooks/redux';
 
 const HeroesOrItemsPage = () => {
+    const authUser = useAppSelector(state => state.AuthSlice)
+    
+
     const { categoryId, id } = useParams();
     const [itemsData, setItemsData] = useState<IDataItems[]>([]);
     const [itemSelected, setItemSelected] = useState<IDataItems | null>(null);
@@ -79,7 +83,12 @@ const HeroesOrItemsPage = () => {
                         />
                     ))}
                 </section>
-                <FormCreateHeroesOrItemsComponent />
+                {
+                    authUser.role === "ADMIN" ?
+                        <FormCreateHeroesOrItemsComponent />
+                        :
+                        <></>
+                }
             </main>
             <CustomAlert />
         </>

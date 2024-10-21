@@ -1,21 +1,23 @@
 import CustomAlert from '../../components/GeneralComponents/alert/CustomAlert';
 import Form from 'react-bootstrap/Form';
 import CustomButton from '../../components/GeneralComponents/button/CustomButton';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import CommonLine from '../../components/GeneralComponents/line/CommonLine';
 import { useCallback, useEffect, useState } from 'react';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { alertSlice } from '../../store/reducers/AlertSlice';
 import AuthService from '../../services/authService';
-import { IUser } from '../../models/IUser';
+import { IUserRegister } from '../../models/IUserRegister';
 
 
 const RegisterPage = () => {
     const dispatch = useAppDispatch()
+    const authUser = useAppSelector(state => state.AuthSlice)
     const { showAlert, hideAlert } = alertSlice.actions
 
+    const navigate = useNavigate();
     const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
-    const [dataAuth, setDataAuth] = useState<IUser>({
+    const [dataAuth, setDataAuth] = useState<IUserRegister>({
         email: '',
         name: '',
         password: '',
@@ -23,7 +25,7 @@ const RegisterPage = () => {
         file: undefined,
     })
 
-    const handleChange = (field: keyof IUser) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (field: keyof IUserRegister) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setDataAuth(prev => ({ ...prev, [field]: e.target.value }));
     };
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +75,7 @@ const RegisterPage = () => {
 
             await AuthService.register(formData);
             dispatch(showAlert({ show: true, text: 'Подтвердите свою почту', variant: 'success' }))
+            navigate("/auth");
         } catch (error: any) {
             console.error('Error object:', error);
             if (error?.response?.data?.message !== undefined) {
@@ -89,7 +92,9 @@ const RegisterPage = () => {
     }, [checkInputData]);
 
 
-
+    if (authUser.isAuth && authUser.isActivated) {
+        return <Navigate to="/" replace />;
+    }
 
     return (
         <>
