@@ -3,7 +3,6 @@ const ApiError = require("../exceptions/api-error")
 const uuid = require("uuid")
 const path = require("path");
 
-
 class ItemsService {
     async getItems() {
         const itemData = await Items.findAll()
