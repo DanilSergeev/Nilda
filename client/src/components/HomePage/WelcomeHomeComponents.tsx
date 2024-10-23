@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 const WelcomeHomeComponents = () => {
     return (
         <section className='WelcomeHomeComponents'>
-            <CustomButton><Link to="/aboutUs" className='a-colorUnset'  >История</Link></CustomButton>
-
+            <CustomButton><Link to="/aboutUs" className='a-colorUnset'>История</Link></CustomButton>
         </section>
     )
 }
