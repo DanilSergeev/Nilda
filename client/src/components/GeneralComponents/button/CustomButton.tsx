@@ -3,17 +3,17 @@ import { FC } from 'react';
 interface IButton {
     children?: any,
     /**
-     * May be "Blue" or "Red". Green is default
+     * May be "Green" or "Red". Blue is default
     */
     themeColor?: string,
     [key: string]: any;
 }
 
 const CustomButton: FC<IButton> = ({ children, themeColor, ...props }) => {
-    let thisColor = "CustomButtonGreen";
+    let thisColor = "CustomButtonBlue";
     switch (themeColor) {
-        case "Blue":
-            thisColor = "CustomButtonBlue";
+        case "Green":
+            thisColor = "CustomButtonGreen";
             break;
         case "Red":
             thisColor = "CustomButtonRed";

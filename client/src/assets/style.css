@@ -162,19 +162,19 @@ header button {
     cursor: not-allowed; 
 }
 
-.CustomButtonGreen {
+.CustomButtonBlue {
     background-color: var(--mainColorTwo);
 }
 
-.CustomButtonGreen:hover {
+.CustomButtonBlue:hover {
     background-color: var(--mainColorTwoDark);
 }
 
-.CustomButtonBlue {
+.CustomButtonGreen {
     background-color: var(--mainColorThree);
 }
 
-.CustomButtonBlue:hover {
+.CustomButtonGreen:hover {
     background-color: var(--mainColorThreeDark);
 }
 

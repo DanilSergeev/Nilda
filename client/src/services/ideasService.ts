@@ -7,7 +7,7 @@ export default class IdeasService{
     static async getIdea(id:number){
         return $api.get(`/idea/${id}`)
     }
-    static async updateIdea(id:string, title:string, text:string){
+    static async updateIdea(id:number, title:string, text:string){
         return $api.put(`/idea/update/${id}`, {title, text})
         .then((res:any)=>res.data)
     }

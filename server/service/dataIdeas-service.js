@@ -24,7 +24,8 @@ class IdeasService {
     }
     
 
-    async updateIdea(id,) {
+    async updateIdea(id, title, text) {
+
         const ideaData = await Ideas.update(
             { title, text },
             { where: { id } },
