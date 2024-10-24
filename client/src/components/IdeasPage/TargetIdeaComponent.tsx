@@ -98,7 +98,7 @@ const TargetIdeaComponent: React.FC<TargetIdeaComponentProps> = ({ onUpdateIdea 
                                     />
                                 </Form.Group>
                             </Form>
-                            <div>
+                            <div className='d-flex justify-content-around'>
                                 <CustomButton onClick={sendQueryUpdata} themeColor='Blue'>Сохронить</CustomButton>
                                 <CustomButton onClick={handlerChangeEditor}>Отмена режима редактирования</CustomButton>
                                 <CustomButton themeColor='Red'>Удалить элемент</CustomButton>
