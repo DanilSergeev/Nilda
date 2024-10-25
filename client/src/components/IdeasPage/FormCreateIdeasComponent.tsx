@@ -1,22 +1,38 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import CustomButton from '../GeneralComponents/button/CustomButton';
+import { useAppDispatch } from '../../hooks/redux';
+import IdeasService from '../../services/ideasService';
+import { alertSlice } from '../../store/reducers/AlertSlice';
+import { ideasSlice } from '../../store/reducers/IdeasSlice';
 
 
-interface FormCreateIdeasProps {
-    onSubmit: (title: string, text: string) => void;
-}
 
-const FormCreateIdeasComponent: React.FC<FormCreateIdeasProps> = ({ onSubmit }) => {
+const FormCreateIdeasComponent: React.FC = () => {
+    const dispatch = useAppDispatch()
+    const { showAlert } = alertSlice.actions
+    const { addIdea } = ideasSlice.actions
+
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
 
 
-    const handleSubmit = () => {
-        onSubmit(title, text);
-        setTitle("");
-        setText("");
+
+    const sendDataCreate = async () => {
+        try {
+            const res = await IdeasService.createIdea(title, text);
+            dispatch(showAlert({ show: true, text: `Элемент успешно создан`, variant: "success" }));
+            dispatch(addIdea(res.idea))
+        } catch (error: any) {
+            console.error("Error object:", error);
+            if (error?.response?.data?.message !== undefined) {
+                dispatch(showAlert({ show: true, text: `Ошибка - ${error?.response?.data?.message}`, variant: "danger" }));
+            } else {
+                dispatch(showAlert({ show: true, text: `Ошибка - ${error?.message}`, variant: "danger" }));
+            }
+        }
     };
+
 
     return (
         <section className='formCreateIdea mb-5'>
@@ -40,7 +56,7 @@ const FormCreateIdeasComponent: React.FC<FormCreateIdeasProps> = ({ onSubmit }) 
                         rows={3}
                     />
                 </Form.Group>
-                <CustomButton type='button' onClick={handleSubmit}>Создать</CustomButton>
+                <CustomButton type='button' onClick={sendDataCreate}>Создать</CustomButton>
             </Form>
         </section>
     );

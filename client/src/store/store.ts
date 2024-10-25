@@ -3,6 +3,7 @@ import AlertSlice from "./reducers/AlertSlice";
 import ModalSlice from "./reducers/ModalSlice";
 import AuthSlice from "./reducers/AuthSlice";
 import IdeaSlice from "./reducers/IdeaSlice";
+import IdeasSlice from "./reducers/IdeasSlice";
 
 
 const rootReducers = combineReducers({
@@ -10,6 +11,7 @@ const rootReducers = combineReducers({
     ModalSlice,
     AuthSlice,
     IdeaSlice,
+    IdeasSlice,
 })
 export const setupStore= ()=>{
     return configureStore({

@@ -5,6 +5,7 @@ const initialState: IDataIdeas = {
     id: 0,
     title: '',
     text: '',
+    createdAt: '',
     updatedAt: '',
 }
 

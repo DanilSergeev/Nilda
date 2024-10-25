@@ -3,22 +3,19 @@ import CustomButton from '../GeneralComponents/button/CustomButton';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { Form } from 'react-bootstrap';
 import IdeasService from '../../services/ideasService';
-import { IDataIdeas } from '../../models/IDataIdeas';
 import { ideaSlice } from '../../store/reducers/IdeaSlice';
 import { alertSlice } from '../../store/reducers/AlertSlice';
 import { modalSlice } from '../../store/reducers/ModalSlice';
 import MyModal from '../GeneralComponents/modal/MyModal';
+import { ideasSlice } from '../../store/reducers/IdeasSlice';
 
 
-interface TargetIdeaComponentProps {
-    onUpdateIdea: (updatedIdea: IDataIdeas) => void;
-}
-
-const TargetIdeaComponent: React.FC<TargetIdeaComponentProps> = ({ onUpdateIdea }) => {
+const TargetIdeaComponent: React.FC = () => {
     const dispatch = useAppDispatch()
     const ideaTargetData = useAppSelector(state => state.IdeaSlice)
     const authUser = useAppSelector(state => state.AuthSlice)
-    const { setIdea } = ideaSlice.actions
+    const { setIdea, unSetIdea } = ideaSlice.actions
+    const { updateIdeas, removeIdeas } = ideasSlice.actions
     const { showAlert } = alertSlice.actions
     const { showModal, hideModal } = modalSlice.actions
 
@@ -26,44 +23,40 @@ const TargetIdeaComponent: React.FC<TargetIdeaComponentProps> = ({ onUpdateIdea 
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
 
-
     const handlerChangeEditor = () => {
         setIsEditor(prev => !prev)
     }
 
-    // const funShowModalDel = (id: number) => {
-    //     dispatch(showModal({ show: true, title: "Форма удаления", text: "Подтвердите удаление элемента", }));
-    //     setIdForDeleted(id);
-    // };
-    // const sendQueryDelite = async (id: number) => {
-    //     try {
-    //         const res = await IdeasService.delIdea(id);
-    //         setIdeasData(prev => prev.filter((item) => item.id !== id));
-    //         dispatch(showAlert({ show: true, text: `${res.data}`, variant: 'success' }));
-    //         dispatch(hideModal());
-    //     } catch (error: any) {
-    //         dispatch(showAlert({ show: true, text: `Ошибка - ${error?.message}`, variant: 'danger' }));
-    //         console.error(error);
-    //     }
-    // };
+    const funShowModalDel = () => {
+        dispatch(showModal({ show: true, title: "Форма удаления", text: "Подтвердите удаление элемента", }));
+    };
+
+    const sendQueryDelete = async () => {
+        try {
+            const res = await IdeasService.delIdea(ideaTargetData.id);
+            dispatch(removeIdeas(ideaTargetData.id))
+            dispatch(showAlert({ show: true, text: `${res.data}`, variant: 'success' }));
+            dispatch(hideModal());
+            dispatch(unSetIdea())
+            handlerChangeEditor()
+        } catch (error: any) {
+            dispatch(showAlert({ show: true, text: `Ошибка - ${error?.message}`, variant: 'danger' }));
+            console.error(error);
+        }
+    };
 
     async function sendQueryUpdata() {
         try {
             await IdeasService.updateIdea(ideaTargetData.id, title, text);
-            onUpdateIdea({ id: ideaTargetData.id, title, text, updatedAt: 'now' });
-            dispatch(setIdea({ id: ideaTargetData.id, title, text, updatedAt: 'now' }))
+            dispatch(updateIdeas({ id: ideaTargetData.id, title, text, createdAt: 'now', updatedAt: 'now' }))
+            dispatch(setIdea({ id: ideaTargetData.id, title, text, createdAt: 'now', updatedAt: 'now' }))
             dispatch(showAlert({ show: true, text: `Успешно обновлено`, variant: 'success' }));
             handlerChangeEditor()
         } catch (error: any) {
             dispatch(showAlert({ show: true, text: `Ошибка - ${error?.message}`, variant: 'danger' }));
-
             console.error(error)
         }
     }
-
-
-
-
 
     useEffect(() => {
         if (ideaTargetData.id !== 0) {
@@ -101,7 +94,7 @@ const TargetIdeaComponent: React.FC<TargetIdeaComponentProps> = ({ onUpdateIdea 
                             <div className='d-flex justify-content-around'>
                                 <CustomButton onClick={sendQueryUpdata} themeColor='Blue'>Сохронить</CustomButton>
                                 <CustomButton onClick={handlerChangeEditor}>Отмена режима редактирования</CustomButton>
-                                <CustomButton themeColor='Red'>Удалить элемент</CustomButton>
+                                <CustomButton themeColor='Red' onClick={funShowModalDel}>Удалить элемент</CustomButton>
 
                             </div>
                         </>
@@ -113,7 +106,7 @@ const TargetIdeaComponent: React.FC<TargetIdeaComponentProps> = ({ onUpdateIdea 
                             <p className='text-preWrap'>{ideaTargetData.text}</p>
 
                             {
-                                authUser.role==="ADMIN" ?
+                                authUser.role === "ADMIN" ?
                                     <CustomButton onClick={handlerChangeEditor}>Редактировать</CustomButton>
                                     :
                                     <></>
@@ -130,7 +123,7 @@ const TargetIdeaComponent: React.FC<TargetIdeaComponentProps> = ({ onUpdateIdea 
             <MyModal>
                 <div className='d-flex justify-content-between mt-4'>
                     <CustomButton onClick={() => dispatch(hideModal())}>Отмена</CustomButton>
-                    {/* <CustomButton themeColor='Red' onClick={() => idForDeleted !== null && deletedIdeas(idForDeleted)}>Удалить</CustomButton> */}
+                    <CustomButton themeColor='Red' onClick={sendQueryDelete}>Удалить</CustomButton>
                 </div>
             </MyModal>
         </>

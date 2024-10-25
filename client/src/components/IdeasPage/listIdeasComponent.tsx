@@ -1,21 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import CustomButton from '../GeneralComponents/button/CustomButton';
 import { FC } from 'react';
 import Form from 'react-bootstrap/Form';
 import { IDataIdeas } from '../../models/IDataIdeas';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import IdeasService from '../../services/ideasService';
+import { ideaSlice } from '../../store/reducers/IdeaSlice';
+import { ideasSlice } from '../../store/reducers/IdeasSlice';
 
 
 
-interface ListIdeasProps {
-  ideasData: IDataIdeas[];
-  onTargetClick: (id: number) => void;
-}
+const ListIdeasComponent: FC = () => {
+  const ideasData = useAppSelector(state => state.IdeasSlice.ideas)
+  const dispatch = useAppDispatch()
+  const { setIdea } = ideaSlice.actions
+  const { setIdeas } = ideasSlice.actions
 
-const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick }) => {
   const [sortBy, setSortBy] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<boolean>(true);
+
+  const featchDataTargetIdea = async (id: number) => {
+    try {
+      const data = await IdeasService.getIdea(id) as { data: IDataIdeas };
+      dispatch(setIdea(data.data))
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.error('Ошибка -', error);
+      
+    }
+  };
+
+
+
+  const featchIdeas = async () => {
+    try {
+      const response = await IdeasService.getIdeas();
+      dispatch(setIdeas(response.data))
+    } catch (error) {
+      console.error('Ошибка при загрузке идей:', error);
+    }
+  };
+
+
+
+
+
+
+
+
+
 
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(event.target.value);
@@ -55,8 +90,13 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick }) =>
       idea.text.toLowerCase().includes(searchTerm.toLowerCase())
     );
   };
-
   const sortedAndFilteredIdeas = filterIdeas(sortIdeas(ideasData));
+
+
+
+  useEffect(() => {
+    featchIdeas();
+  }, []);
 
   return (
     <section className='listIdeas'>
@@ -95,7 +135,7 @@ const ListIdeasComponent: FC<ListIdeasProps> = ({ ideasData, onTargetClick }) =>
                 </div>
               </div>
               <div className='ButtonsListIdeas'>
-                <CustomButton onClick={() => onTargetClick(item.id)}>Подробнее</CustomButton>
+                <CustomButton onClick={() => featchDataTargetIdea(item.id)}>Подробнее</CustomButton>
               </div>
             </ListGroup.Item>
           ))
