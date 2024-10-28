@@ -124,3 +124,8 @@
 .carousel__thumbnails li.active {
   box-shadow: 0px 0px 0px 5px rgba(0, 0, 255, 0.5);
 }
+
+.smText{
+  font-size: 11px;
+  opacity: 0.7;
+}

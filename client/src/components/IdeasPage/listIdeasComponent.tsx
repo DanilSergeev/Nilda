@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import CustomButton from '../GeneralComponents/button/CustomButton';
 import { FC } from 'react';
@@ -34,14 +34,14 @@ const ListIdeasComponent: FC = () => {
 
 
 
-  const featchIdeas = async () => {
+  const featchIdeas = useCallback( async () => {
     try {
       const response = await IdeasService.getIdeas();
       dispatch(setIdeas(response.data))
     } catch (error) {
       console.error('Ошибка при загрузке идей:', error);
     }
-  };
+  },[dispatch, setIdeas]);
 
 
 
@@ -96,7 +96,7 @@ const ListIdeasComponent: FC = () => {
 
   useEffect(() => {
     featchIdeas();
-  }, []);
+  }, [featchIdeas]);
 
   return (
     <section className='listIdeas'>

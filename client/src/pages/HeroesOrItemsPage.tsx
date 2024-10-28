@@ -2,20 +2,24 @@ import { useParams } from 'react-router-dom';
 import DataItemService from '../services/dataItemService';
 import { useEffect, useState, useCallback } from 'react';
 import CardsHomePage from '../components/GeneralComponents/card/CardsHomePage';
-import CarouselWithThumbnails from '../components/GeneralComponents/carousel/CarouselWithThumbnails/CarouselWithThumbnails';
 import FormCreateHeroesOrItemsComponent from '../components/HeroesOrItemsComponents/FormCreateHeroesOrItemsComponent';
 import CommonLine from '../components/GeneralComponents/line/CommonLine';
-import { IDataItems } from '../models/IDataItems';
 import CustomAlert from '../components/GeneralComponents/alert/CustomAlert';
-import {  useAppSelector } from '../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import CarouselTarget from '../components/HeroesOrItemsComponents/CarouselTarget';
+import { itemSlice } from '../store/reducers/ItemSlice';
+import { itemsSlice } from '../store/reducers/ItemsSlice';
 
 const HeroesOrItemsPage = () => {
     const authUser = useAppSelector(state => state.AuthSlice)
-    
+    const itemsData = useAppSelector(state => state.ItemsSlice)
+    const itemSelected = useAppSelector(state => state.ItemSlice)
+    const dispatch = useAppDispatch()
+    const { setItems } = itemsSlice.actions
+    const { setItem, unSetItem } = itemSlice.actions
+
 
     const { categoryId, id } = useParams();
-    const [itemsData, setItemsData] = useState<IDataItems[]>([]);
-    const [itemSelected, setItemSelected] = useState<IDataItems | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [categoryName, setCategoryName] = useState<string>('')
 
@@ -54,34 +58,47 @@ const HeroesOrItemsPage = () => {
                     fetchSelectedItem(),
                 ]);
 
-                setItemsData(itemsResponse.data);
-                setItemSelected(selectedItemResponse.data);
+                dispatch(setItems(itemsResponse.data))
+                if (selectedItemResponse.data) {
+                    dispatch(setItem(selectedItemResponse.data));
+                } else {
+                    dispatch(unSetItem());
+                }
             } catch (error) {
                 console.error(error);
             }
         };
 
         loadData();
-    }, [fetchDataItems, fetchSelectedItem]);
+    }, [dispatch, fetchDataItems, fetchSelectedItem, setItems, setItem, unSetItem]);
+
+
+
 
     return (
         <>
             <main className="heroesOrItemsPage">
                 {error && <p>{error}</p>}
                 {
-                    itemSelected ? <CarouselWithThumbnails items={itemSelected ? [itemSelected] : []} /> : <></>
+                    itemSelected.id !== 0 ? <CarouselTarget /> : <></>
                 }
                 <CommonLine title={`${categoryName}`} text='Просматривайте наш обширный каталог персонажей и предметов, каждый из которых имеет свою уникальную историю и цель' />
                 <section className="wrapper carouselHome mt-3 mb-3">
-                    {itemsData.map((item) => (
-                        <CardsHomePage
-                            key={item.id}
-                            imgSrc={`${process.env.REACT_APP_GET_IMAGE_URL}${item.imageOfItems[0]?.url}`}
-                            title={item.title}
-                            text={item.description}
-                            link={`/itemsById/${categoryId}/id/${item.id}`}
-                        />
-                    ))}
+                    {
+                        !itemsData.data || itemsData.data.length === 0 ?
+                            <div>Нет элементов для отображения</div>
+                            :
+                            itemsData.data.map((item) => (
+                                <CardsHomePage
+                                    key={item.id}
+                                    imgSrc={`${process.env.REACT_APP_GET_IMAGE_URL}${item.imageOfItems[0]?.url}`}
+                                    title={item.title}
+                                    text={item.description}
+                                    link={`/itemsById/${categoryId}/id/${item.id}`}
+                                />
+                            ))
+
+                    }
                 </section>
                 {
                     authUser.role === "ADMIN" ?

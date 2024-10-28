@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux';
 import { alertSlice } from '../../store/reducers/AlertSlice';
 import { IDataInput } from '../../models/IDataInput';
+import { itemsSlice } from '../../store/reducers/ItemsSlice';
 
 
 
@@ -15,7 +16,8 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
   const { categoryId = 0 } = useParams();
   const dispatch = useAppDispatch()
   const { showAlert, hideAlert } = alertSlice.actions
-  
+  const { addItems } = itemsSlice.actions
+
   const [countries, setCountries] = useState<ICatrgoryOrCountry[]>([]);
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
   const [inputData, setInputData] = useState<IDataInput>({
@@ -59,8 +61,9 @@ const FormCreateHeroesOrItemsComponent: React.FC = () => {
       formData.append('countryId', inputData.country.toString());
       formData.append('file', inputData.file as File);
 
-      await DataItemService.creatItem(formData);
-      dispatch(showAlert({ show: true, text: 'Объект успешно создан', variant: 'success' }))
+      let data = await DataItemService.creatItem(formData);
+      dispatch(addItems({...data, imageOfItems:[{id: 1, url:`noimage.jpg`}]}));
+      dispatch(showAlert({ show: true, text: 'Объект успешно создан (Обновите страницу для получения изоброжений)', variant: 'success' }))
     } catch (error: any) {
       console.error('Error object:', error);
       if (error?.response?.data?.message !== undefined) {

@@ -95,7 +95,6 @@ const TargetIdeaComponent: React.FC = () => {
                                 <CustomButton onClick={sendQueryUpdata} themeColor='Blue'>Сохронить</CustomButton>
                                 <CustomButton onClick={handlerChangeEditor}>Отмена режима редактирования</CustomButton>
                                 <CustomButton themeColor='Red' onClick={funShowModalDel}>Удалить элемент</CustomButton>
-
                             </div>
                         </>
                     ) : (

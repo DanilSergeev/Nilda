@@ -16,6 +16,10 @@ interface ICard {
     link: string;
 }
 
+function handlerClick() {
+    window.scrollTo(0,0)
+}
+
 const CardsHomePage: FC<ICard> = ({ imgSrc, title, text, link }) => (
 
     <Card>
@@ -24,7 +28,7 @@ const CardsHomePage: FC<ICard> = ({ imgSrc, title, text, link }) => (
             <Card.Title as="h3" className="mt-4">{title}</Card.Title>
             <Card.Text>{text}</Card.Text>
             <Link to={link}>
-                <CustomButton>
+                <CustomButton onClick={handlerClick}>
                     Подробние
                 </CustomButton>
             </Link>
