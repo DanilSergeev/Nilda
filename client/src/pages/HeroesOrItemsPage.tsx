@@ -15,7 +15,7 @@ const HeroesOrItemsPage = () => {
     const itemsData = useAppSelector(state => state.ItemsSlice)
     const itemSelected = useAppSelector(state => state.ItemSlice)
     const dispatch = useAppDispatch()
-    const { setItems } = itemsSlice.actions
+    const { setItems } = itemsSlice.actions 
     const { setItem, unSetItem } = itemSlice.actions
 
 
