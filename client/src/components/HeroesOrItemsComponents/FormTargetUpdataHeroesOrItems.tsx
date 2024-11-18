@@ -10,6 +10,21 @@ import { itemsSlice } from '../../store/reducers/ItemsSlice';
 import { ICatrgoryOrCountry } from '../../models/ICatrgoryAndCountry';
 import DataItemService from '../../services/dataItemService';
 import AuxiliaryDataServic from '../../services/auxiliaryDataService';
+import classes from '../../components/GeneralComponents/carousel/module/CarouselWithThumbnails.module.css';
+
+
+
+interface IImageItem {
+    id: number;
+    url: string;
+}
+interface IInputData {
+    title: string;
+    description: string;
+    countryId: number;
+    imageOfItems: IImageItem[];
+}
+
 
 interface IFormTargetUpdataHeroesOrItemsProps {
     handlerChangeEditor: () => void,
@@ -21,10 +36,11 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
     const { showModal, hideModal } = modalSlice.actions
     const { unSetItem, setItem } = itemSlice.actions
     const { showAlert } = alertSlice.actions
+
     const dispatch = useAppDispatch()
 
     const [countries, setCountries] = useState<ICatrgoryOrCountry[]>([]);
-    const [inputData, setInputData] = useState({
+    const [inputData, setInputData] = useState<IInputData>({
         title: '',
         description: '',
         countryId: 0,
@@ -76,7 +92,13 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
 
     useEffect(() => {
         if (dataItem.id !== 0) {
-            setInputData(prev => ({ ...prev, title: dataItem.title, description: dataItem.description, countryId: dataItem.countryId }));
+            setInputData(prev => ({
+                ...prev,
+                title: dataItem.title,
+                description: dataItem.description,
+                countryId: dataItem.countryId,
+                imageOfItems: dataItem.imageOfItems,
+            }));
         }
     }, [dataItem]);
 
@@ -94,7 +116,7 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                     <Form.Select
                         onChange={(e) => setInputData((prev) => ({ ...prev, countryId: Number(e.target.value) }))}
                         className='mb-3'
-                        value={inputData.countryId} 
+                        value={inputData.countryId}
                         aria-label='Default select'
                     >
                         <option value='' disabled>
@@ -127,14 +149,25 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                     />
                 </Form.Group>
 
+                <ul className={classes.carousel__thumbnails}>
+                    {inputData.imageOfItems.map((image, imageIndex) => (
+                        <li key={`thumbnail-${dataItem.id}-${imageIndex}`} >
+                            <label htmlFor={`slide-${dataItem.id}-${imageIndex}`} >
+                                <img src={process.env.REACT_APP_GET_IMAGE_URL + image.url} alt={dataItem.title} />
+                            </label>
+                        </li>
+                    ))}
+                    {/* <CustomButton themeColor='Red' >Удалить выделенные изображения</CustomButton> */}
+                </ul>
+                {/* 
                 <Form.Group className='mb-3'>
                     <Form.Label>Вставте фото: </Form.Label>
-                    {/* <Form.Control
-                    onChange={} 
-                    type='file'
-                    multiple 
-                  /> */}
-                </Form.Group>
+                    <Form.Control
+                        onChange={e => console.log(e.target.value)}
+                        type='file'
+                        multiple
+                    />
+                </Form.Group> */}
             </Form>
 
             <div className='wrapper d-flex justify-content-around mb-3'>

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import classes from './CarouselWithThumbnails.module.css';
+import classes from '../module/CarouselWithThumbnails.module.css';
 import { useAppSelector } from '../../../../hooks/redux';
 
 
@@ -10,9 +10,8 @@ const CarouselWithThumbnails: FC = () => {
   const handleRadioChange = (index: number) => {
     setActiveIndex(index);
   };
-
+  
   const imageOfItems = dataItems.imageOfItems || [];
-
   return (
     <div className={classes.container}>
       <div className={classes.carousel}>
@@ -27,7 +26,7 @@ const CarouselWithThumbnails: FC = () => {
           </React.Fragment>
         ))}
 
-        <ul className={classes.carousel__slides}>
+        <ul className={classes.carousel__slides} >
           {imageOfItems.map((image, imageIndex) => (
             <li className={classes.carousel__slide} key={`slide-${dataItems.id}-${imageIndex}`}>
               <figure>
