@@ -46,15 +46,19 @@ class ItemsService {
             countryId,
         });
 
-        if ((images && (images.file || images.img)) ) {
-            let imageArray;
-            if (images.file) {
-                imageArray = [images.file];
-            } else {
-                imageArray = images.img;
-            }
-            const imageInstances = await Promise.all(
+        let imageArray = [];
+       
+        if (images.file) {
+            imageArray = [images.file];
+        } else if (images.img) {
+            imageArray = Array.isArray(images.img) ? images.img : [images.img]; 
+        } else if (images.files) {
+            imageArray = Array.isArray(images.files) ? images.files : [images.files]; 
+        }
 
+        if (imageArray.length > 0) {
+
+            const imageInstances = await Promise.all(
                 imageArray.map(async (img) => {
                     const fileName = uuid.v4() + ".jpg";
                     const filePath = path.resolve(__dirname, "..", "static", fileName);
