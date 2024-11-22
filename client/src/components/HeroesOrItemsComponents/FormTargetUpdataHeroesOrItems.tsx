@@ -47,6 +47,20 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
         imageOfItems: []
     })
 
+    const [selectedImages, setSelectedImages] = useState<number[]>([]);
+    const handleImageSelect = (imageId: number) => {
+        setSelectedImages((prev) => {
+            if (prev.includes(imageId)) {
+                return prev.filter(id => id !== imageId);
+            } else {
+                return [...prev, imageId];
+            }
+        });
+    };
+
+
+
+
 
     function funShowModalDel() {
         dispatch(showModal({ show: true, title: "Форма удаления", text: "Подтвердите удаление элемента", }));
@@ -99,6 +113,7 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                 countryId: dataItem.countryId,
                 imageOfItems: dataItem.imageOfItems,
             }));
+            setSelectedImages([]);
         }
     }, [dataItem]);
 
@@ -112,7 +127,7 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
             <Form className='wrapper '>
                 <h2>Форма обновления</h2>
                 <Form.Group className="mb-3" >
-                    <Form.Label>Введите страну</Form.Label>
+                    <Form.Label>Введите страну:</Form.Label>
                     <Form.Select
                         onChange={(e) => setInputData((prev) => ({ ...prev, countryId: Number(e.target.value) }))}
                         className='mb-3'
@@ -131,7 +146,7 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                 </Form.Group>
 
                 <Form.Group className="mb-3" >
-                    <Form.Label>Введите загаловок</Form.Label>
+                    <Form.Label>Введите загаловок:</Form.Label>
                     <Form.Control
                         value={inputData.title}
                         onChange={(e) => setInputData(prev => ({ ...prev, title: e.target.value }))}
@@ -139,7 +154,7 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                     />
                 </Form.Group>
                 <Form.Group className="mb-3" >
-                    <Form.Label>Введите описание</Form.Label>
+                    <Form.Label>Введите описание:</Form.Label>
                     <Form.Control
                         value={inputData.description}
                         onChange={(e) => setInputData(prev => ({ ...prev, description: e.target.value }))}
@@ -149,16 +164,37 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                     />
                 </Form.Group>
 
-                <ul className={classes.carousel__thumbnails}>
-                    {inputData.imageOfItems.map((image, imageIndex) => (
-                        <li key={`thumbnail-${dataItem.id}-${imageIndex}`} >
-                            <label htmlFor={`slide-${dataItem.id}-${imageIndex}`} >
-                                <img src={process.env.REACT_APP_GET_IMAGE_URL + image.url} alt={dataItem.title} />
-                            </label>
-                        </li>
-                    ))}
-                    {/* <CustomButton themeColor='Red' >Удалить выделенные изображения</CustomButton> */}
-                </ul>
+                <Form.Group className="mb-3" >
+                    <Form.Label>Управляйте изображениями</Form.Label>
+                    <ul className={classes.carousel__thumbnails}>
+                        {inputData.imageOfItems.map((image, imageIndex) => (
+                            <li key={`thumbnail-${dataItem.id}-${imageIndex}`} className={selectedImages.includes(image.id) ? classes.activeForDel : ''}>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedImages.includes(image.id)}
+                                    onChange={() => handleImageSelect(image.id)}
+                                    id={`image-checkbox-${image.id}`}
+                                />
+                                <label htmlFor={`image-checkbox-${image.id}`}>
+                                    <img src={process.env.REACT_APP_GET_IMAGE_URL + image.url} alt={dataItem.title} />
+                                </label>
+                            </li>
+                        ))}
+                        {
+                            <li className={classes.addImages}>
+                                < input type="file" />
+                            </li>
+                        }
+
+                    </ul>
+                    {
+                        selectedImages.length > 0 ?
+                            <CustomButton className="mb-5" themeColor='Red' >Удалить выделенные изображения</CustomButton>
+                            :
+                            <></>
+                    }
+                </Form.Group>
+
                 {/* 
                 <Form.Group className='mb-3'>
                     <Form.Label>Вставте фото: </Form.Label>

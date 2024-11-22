@@ -88,12 +88,12 @@ const HeroesOrItemsPage = () => {
                         !itemsData.data || itemsData.data.length === 0 ?
                             <div>Нет элементов для отображения</div>
                             :
-                            itemsData.data.map((item) => (
+                            itemsData.data.map((item) => ( 
                                 <CardsHomePage
                                     key={item.id}
                                     imgSrc={`${process.env.REACT_APP_GET_IMAGE_URL}${item.imageOfItems[0]?.url}`}
-                                    title={item.title}
-                                    text={item.description}
+                                    title={item.title.length > 25 ? item.title.substr(0, 25) + "..." : item.title}
+                                    text={item.description.length > 90 ? item.description.substr(0, 90) + "..." : item.description}
                                     link={`/itemsById/${categoryId}/id/${item.id}`}
                                 />
                             ))

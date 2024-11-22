@@ -25,9 +25,9 @@ const CardsHomePage: FC<ICard> = ({ imgSrc, title, text, link }) => (
     <Card>
         <Card.Body>
             <Card.Img draggable={false} src={imgSrc}></Card.Img>
-            <Card.Title as="h3" className="mt-4">{title}</Card.Title>
-            <Card.Text>{text}</Card.Text>
-            <Link to={link}>
+            <Card.Title  as="h3" className="mt-4 text-preWrap">{title}</Card.Title>
+            <Card.Text className='text-preWrap'>{text}</Card.Text>
+            <Link to={link} className='mt-auto'>
                 <CustomButton onClick={handlerClick}>
                     Подробние
                 </CustomButton>
