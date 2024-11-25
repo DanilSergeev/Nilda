@@ -146,5 +146,35 @@
   box-shadow: 0px 0px 0px 6px rgb(255, 1, 1);
 }
 
-.carousel__thumbnails .addImages{
+.carousel__thumbnails .addImages {
+  border: 4px solid #767676;
+  border-style: dashed;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s linear;
+}
+
+.carousel__thumbnails .addImages:hover {
+  border: 4px solid #363636;
+  background-color: #e5e5e5;
+  border-style: dashed;
+
+}
+
+.carousel__thumbnails .addImages input[type="file"] {
+  display: none;
+  cursor: pointer;
+}
+
+.carousel__thumbnails .addImages label {
+  display: inline-block;
+  cursor: pointer;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+}
+
+.carousel__thumbnails .addImages svg {
+  position: absolute;
+  transform: scale(0.4);
 }

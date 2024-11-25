@@ -182,10 +182,13 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                         ))}
                         {
                             <li className={classes.addImages}>
-                                < input type="file" />
+                                <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g clip-rule="evenodd" fill="#767676" fill-rule="evenodd"><path d="m12 18c-.5523 0-1-.4477-1-1v-9.37868c0-.44545-.5386-.66854-.8536-.35356l-2.43929 2.43934c-.39053.3905-1.02369.3905-1.41422 0-.39052-.39052-.39052-1.02369 0-1.41421l5.00001-5c.3905-.39052 1.0237-.39052 1.4142 0l5 5c.3905.39053.3905 1.02369 0 1.41422-.3905.39049-1.0237.39049-1.4142 0l-2.4393-2.43934c-.315-.31499-.8536-.0919-.8536.35355v9.37868c0 .5523-.4477 1-1 1z" /><path d="m5 20c0-.5523.44772-1 1-1h12c.5523 0 1 .4477 1 1s-.4477 1-1 1h-12c-.55228 0-1-.4477-1-1z" /></g></svg>
+                                <label >
+                                    <input type="file" />
+                                </label>
                             </li>
                         }
-
+                        {/* ⇩ */}
                     </ul>
                     {
                         selectedImages.length > 0 ?
