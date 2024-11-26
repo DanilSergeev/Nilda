@@ -81,10 +81,6 @@ class DataItemController {
 
     async updateItemImages(req, res, next) {
         try {
-            const { id } = req.params;
-            if (!id) {
-                return next(ApiError.BadRequest("ID не передан"));
-            }
             const { imagesId, variant } = req.body;
             if (!imagesId) {
                 return next(ApiError.BadRequest("imagesId не передан"));
@@ -93,7 +89,7 @@ class DataItemController {
                 return next(ApiError.BadRequest("variant не передан"));
             }
 
-            const data = await ItemsService.updateItemImages(id, imagesId, variant);
+            const data = await ItemsService.updateItemImages( imagesId, variant);
             res.json(data);
         } catch (error) {
             next(error);

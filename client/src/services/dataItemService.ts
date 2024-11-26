@@ -17,12 +17,12 @@ export default class DataItemService{
         return $api.post(`/item/`, formData)
         .then((res:any)=>res.data)
     }
-    static async updateItem(id:string, formData:FormData){
-        return $api.put(`/item/update/${id}`, formData)
+    static async updateItem(id:number, title:string, description:string, categoryId:number, countryId:number){
+        return $api.put(`/item/update/${id}`, {title, description, categoryId, countryId})
         .then((res:any)=>res.data)
     }
-    static async updateItemImages(id:string, formData:FormData){
-        return $api.put(`/item/updateImage/${id}`, formData)
+    static async updateItemImages(formData:FormData){
+        return $api.put(`/item/updateImage/`, formData)
         .then((res:any)=>res.data)
     }
     static async deleteItem(id:number){

@@ -21,6 +21,7 @@ interface IImageItem {
 interface IInputData {
     title: string;
     description: string;
+    categoryId: number;
     countryId: number;
     imageOfItems: IImageItem[];
 }
@@ -40,9 +41,12 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
     const dispatch = useAppDispatch()
 
     const [countries, setCountries] = useState<ICatrgoryOrCountry[]>([]);
+    const [categorys, setCategorys] = useState<ICatrgoryOrCountry[]>([]);
+    const [addFile, setAddFile] = useState<File | null>(null);
     const [inputData, setInputData] = useState<IInputData>({
         title: '',
         description: '',
+        categoryId: 0,
         countryId: 0,
         imageOfItems: []
     })
@@ -74,15 +78,50 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
             throw error;
         }
     };
+    const fetchCategorys = async () => {
+        try {
+            const categorys = await AuxiliaryDataServic.getCategorys();
+            setCategorys(categorys.data);
+        } catch (error) {
+            throw error;
+        }
+    };
 
     async function sendQueryUpdata() {
         try {
-            // await DataItemService.updateItem(ideaTargetData.id, title, text);
+            await DataItemService.updateItem( dataItem.id, inputData.title, inputData.description, inputData.categoryId, inputData.countryId);
             const { id, countryId, imageOfItems } = dataItem
             dispatch(updateItems({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
             dispatch(setItem({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
             dispatch(showAlert({ show: true, text: `Успешно обновлено`, variant: 'success' }));
             handlerChangeEditor()
+        } catch (error: any) {
+            dispatch(showAlert({ show: true, text: `Ошибка - ${error?.message}`, variant: 'danger' }));
+            console.error(error)
+        }
+    }
+    async function sendQueryDeliteImages() {
+        try {
+            // await DataItemService.updateItem(ideaTargetData.id, title, text);
+            // const { id, countryId, imageOfItems } = dataItem
+            // dispatch(updateItems({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
+            // dispatch(setItem({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
+            // dispatch(showAlert({ show: true, text: `Успешно обновлено`, variant: 'success' }));
+            // handlerChangeEditor()
+        } catch (error: any) {
+            dispatch(showAlert({ show: true, text: `Ошибка - ${error?.message}`, variant: 'danger' }));
+            console.error(error)
+        }
+    }
+    async function sendQueryAddImage() {
+        try {
+            console.log(156)
+            // await DataItemService.updateItem(ideaTargetData.id, title, text);
+            // const { id, countryId, imageOfItems } = dataItem
+            // dispatch(updateItems({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
+            // dispatch(setItem({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
+            // dispatch(showAlert({ show: true, text: `Успешно обновлено`, variant: 'success' }));
+            // handlerChangeEditor()
         } catch (error: any) {
             dispatch(showAlert({ show: true, text: `Ошибка - ${error?.message}`, variant: 'danger' }));
             console.error(error)
@@ -119,6 +158,7 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
 
     useEffect(() => {
         fetchCountries();
+        fetchCategorys();
     }, []);
 
 
@@ -138,6 +178,25 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                             Выберите страну
                         </option>
                         {countries.map((item) => (
+                            <option key={item.id} value={item.id}>
+                                {item.name}
+                            </option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
+
+                <Form.Group className="mb-3" >
+                    <Form.Label>Введите категорию:</Form.Label>
+                    <Form.Select
+                        onChange={(e) => setInputData((prev) => ({ ...prev, categoryId: Number(e.target.value) }))}
+                        className='mb-3'
+                        value={inputData.categoryId}
+                        aria-label='Default select'
+                    >
+                        <option value='' disabled>
+                            Выберите категорию
+                        </option>
+                        {categorys.map((item) => (
                             <option key={item.id} value={item.id}>
                                 {item.name}
                             </option>
@@ -182,31 +241,26 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                         ))}
                         {
                             <li className={classes.addImages}>
-                                <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g clip-rule="evenodd" fill="#767676" fill-rule="evenodd"><path d="m12 18c-.5523 0-1-.4477-1-1v-9.37868c0-.44545-.5386-.66854-.8536-.35356l-2.43929 2.43934c-.39053.3905-1.02369.3905-1.41422 0-.39052-.39052-.39052-1.02369 0-1.41421l5.00001-5c.3905-.39052 1.0237-.39052 1.4142 0l5 5c.3905.39053.3905 1.02369 0 1.41422-.3905.39049-1.0237.39049-1.4142 0l-2.4393-2.43934c-.315-.31499-.8536-.0919-.8536.35355v9.37868c0 .5523-.4477 1-1 1z" /><path d="m5 20c0-.5523.44772-1 1-1h12c.5523 0 1 .4477 1 1s-.4477 1-1 1h-12c-.55228 0-1-.4477-1-1z" /></g></svg>
+                                <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g clipRule="evenodd" fill="#767676" fillRule="evenodd"><path d="m12 18c-.5523 0-1-.4477-1-1v-9.37868c0-.44545-.5386-.66854-.8536-.35356l-2.43929 2.43934c-.39053.3905-1.02369.3905-1.41422 0-.39052-.39052-.39052-1.02369 0-1.41421l5.00001-5c.3905-.39052 1.0237-.39052 1.4142 0l5 5c.3905.39053.3905 1.02369 0 1.41422-.3905.39049-1.0237.39049-1.4142 0l-2.4393-2.43934c-.315-.31499-.8536-.0919-.8536.35355v9.37868c0 .5523-.4477 1-1 1z" /><path d="m5 20c0-.5523.44772-1 1-1h12c.5523 0 1 .4477 1 1s-.4477 1-1 1h-12c-.55228 0-1-.4477-1-1z" /></g></svg>
                                 <label >
-                                    <input type="file" />
+                                    <input type="file" onChange={(e: any) => setAddFile(e.target.files[0])} />
                                 </label>
                             </li>
                         }
-                        {/* ⇩ */}
                     </ul>
                     {
                         selectedImages.length > 0 ?
-                            <CustomButton className="mb-5" themeColor='Red' >Удалить выделенные изображения</CustomButton>
+                            <CustomButton className="mb-5" themeColor='Red' onClick={(event: any) => { event.preventDefault(); sendQueryDeliteImages()}} >Удалить выделенные изображения</CustomButton>
+                            :
+                            <></>
+                    }
+                    {
+                        !!addFile ?
+                            <CustomButton className="mb-5" themeColor='Green' onClick={(event: any) => { event.preventDefault(); sendQueryAddImage(); }} >Добавить изоброжение</CustomButton>
                             :
                             <></>
                     }
                 </Form.Group>
-
-                {/* 
-                <Form.Group className='mb-3'>
-                    <Form.Label>Вставте фото: </Form.Label>
-                    <Form.Control
-                        onChange={e => console.log(e.target.value)}
-                        type='file'
-                        multiple
-                    />
-                </Form.Group> */}
             </Form>
 
             <div className='wrapper d-flex justify-content-around mb-3'>

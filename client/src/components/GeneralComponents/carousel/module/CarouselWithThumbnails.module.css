@@ -153,11 +153,12 @@
   cursor: pointer;
   position: relative;
   transition: all 0.2s linear;
+  align-items: center;
 }
 
 .carousel__thumbnails .addImages:hover {
   border: 4px solid #363636;
-  background-color: #e5e5e5;
+  background-color: #00000020;
   border-style: dashed;
 
 }
@@ -177,4 +178,5 @@
 .carousel__thumbnails .addImages svg {
   position: absolute;
   transform: scale(0.4);
+  z-index: -1;
 }

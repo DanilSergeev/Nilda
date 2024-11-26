@@ -82,25 +82,25 @@ class ItemsService {
 
 
 
-    // async updateItem(id, title, description, categoryId, countryId) {
-    //     const itemData = await Items.findOne({ where: { id } });
-    //     if (!itemData) {
-    //         throw ApiError.BadRequest(400, `Такой id ${id} не нейден`);
-    //     }
+    async updateItem(id, title, description, categoryId, countryId) {
+        const itemData = await Items.findOne({ where: { id } });
+        if (!itemData) {
+            throw ApiError.BadRequest(400, `Такой id ${id} не нейден`);
+        }
 
-    //     await Items.update(
-    //         { title, description, categoryId, countryId },
-    //         { where: { id } }
-    //     );
+        await Items.update(
+            { title, description, categoryId, countryId },
+            { where: { id } }
+        );
 
-    //     // if (imagesId.length > 0) {
-    //     //     const images = await ImageOfItem.findAll({ where: { id: imagesId } });
-    //     //     await itemData.setImageOfItems(images);
-    //     // }
+        // if (imagesId.length > 0) {
+        //     const images = await ImageOfItem.findAll({ where: { id: imagesId } });
+        //     await itemData.setImageOfItems(images);
+        // }
 
-    //     // return { data: await Items.findOne({ where: { id }, include: [ImageOfItem] }) };
-    //     return { data: await Items.findOne({ where: { id }}) };
-    // }
+        // return { data: await Items.findOne({ where: { id }, include: [ImageOfItem] }) };
+        return { data: await Items.findOne({ where: { id }}) };
+    }
 
     // async updateItemImages(id, imagesId = [], variant) {
     //     const itemData = await Items.findOne({ where: { id }, include: [ImageOfItem] });
