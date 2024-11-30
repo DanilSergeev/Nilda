@@ -11,6 +11,7 @@ import { ICatrgoryOrCountry } from '../../models/ICatrgoryAndCountry';
 import DataItemService from '../../services/dataItemService';
 import AuxiliaryDataServic from '../../services/auxiliaryDataService';
 import classes from '../../components/GeneralComponents/carousel/module/CarouselWithThumbnails.module.css';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -39,7 +40,7 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
     const { showAlert } = alertSlice.actions
 
     const dispatch = useAppDispatch()
-
+    const navigate = useNavigate();
     const [countries, setCountries] = useState<ICatrgoryOrCountry[]>([]);
     const [categorys, setCategorys] = useState<ICatrgoryOrCountry[]>([]);
     const [addFile, setAddFile] = useState<File | null>(null);
@@ -89,10 +90,13 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
 
     async function sendQueryUpdata() {
         try {
-            await DataItemService.updateItem( dataItem.id, inputData.title, inputData.description, inputData.categoryId, inputData.countryId);
-            const { id, countryId, imageOfItems } = dataItem
-            dispatch(updateItems({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
-            dispatch(setItem({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
+            const { id, imageOfItems } = dataItem
+            await DataItemService.updateItem(id, inputData.title, inputData.description, inputData.categoryId, inputData.countryId);
+            if (inputData.categoryId !== dataItem.categoryId) {
+                navigate(`/itemsById/${inputData.categoryId}/id/${id}`, { replace: true });
+            }
+            dispatch(updateItems({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId: inputData.countryId, categoryId: inputData.categoryId, imageOfItems }))
+            dispatch(setItem({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId: inputData.countryId, categoryId: inputData.categoryId, imageOfItems }))
             dispatch(showAlert({ show: true, text: `Успешно обновлено`, variant: 'success' }));
             handlerChangeEditor()
         } catch (error: any) {
@@ -102,13 +106,13 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
     }
     async function sendQueryDeliteImages() {
         try {
-            const data =await DataItemService.deleteImagesOfItem(dataItem.id, selectedImages);
-            console.log(data)
-            // const { id, countryId, imageOfItems } = dataItem
-            // dispatch(updateItems({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
-            // dispatch(setItem({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
-            // dispatch(showAlert({ show: true, text: `Успешно обновлено`, variant: 'success' }));
-            // handlerChangeEditor()
+            await DataItemService.deleteImagesOfItem(dataItem.id, selectedImages);
+            let { id, title, description, countryId, categoryId, imageOfItems } = dataItem
+            imageOfItems = imageOfItems.filter(item => !selectedImages.includes(item.id))
+            dispatch(updateItems({ id, title, description, updatedAt: new Date().toISOString(), countryId, categoryId, imageOfItems }))
+            dispatch(setItem({ id, title, description, updatedAt: new Date().toISOString(), countryId, categoryId, imageOfItems }))
+            dispatch(showAlert({ show: true, text: `Успешно обновлено`, variant: 'success' }));
+            handlerChangeEditor()
         } catch (error: any) {
             dispatch(showAlert({ show: true, text: `Ошибка - ${error?.message}`, variant: 'danger' }));
             console.error(error)
@@ -116,13 +120,14 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
     }
     async function sendQueryAddImage() {
         try {
-            console.log(156)
-            // await DataItemService.updateItem(ideaTargetData.id, title, text);
-            // const { id, countryId, imageOfItems } = dataItem
-            // dispatch(updateItems({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
-            // dispatch(setItem({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
-            // dispatch(showAlert({ show: true, text: `Успешно обновлено`, variant: 'success' }));
-            // handlerChangeEditor()
+            const formData = new FormData();
+            formData.append('file', addFile as File);
+            const data = await DataItemService.updateItemImages(dataItem.id, formData);
+            let { id, title, description, countryId, categoryId, imageOfItems, } = data.data
+            dispatch(updateItems({ id, title, description, updatedAt: new Date().toISOString(), countryId, categoryId, imageOfItems }))
+            dispatch(setItem({ id, title, description, updatedAt: new Date().toISOString(), countryId, categoryId, imageOfItems }))
+            dispatch(showAlert({ show: true, text: `Успешно обновлено`, variant: 'success' }));
+            handlerChangeEditor()
         } catch (error: any) {
             dispatch(showAlert({ show: true, text: `Ошибка - ${error?.message}`, variant: 'danger' }));
             console.error(error)
@@ -151,11 +156,12 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                 title: dataItem.title,
                 description: dataItem.description,
                 countryId: dataItem.countryId,
+                categoryId: dataItem.categoryId,
                 imageOfItems: dataItem.imageOfItems,
             }));
             setSelectedImages([]);
         }
-    }, [dataItem]);
+    }, [categorys, dataItem]);
 
     useEffect(() => {
         fetchCountries();
@@ -227,21 +233,21 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                 <Form.Group className="mb-3" >
                     <Form.Label>Управляйте изображениями</Form.Label>
                     <ul className={classes.carousel__thumbnails}>
-                        {inputData.imageOfItems[0].id===0 ?
-                        <></>
-                        :inputData.imageOfItems.map((image, imageIndex) => (
-                            <li key={`thumbnail-${dataItem.id}-${imageIndex}`} className={selectedImages.includes(image.id) ? classes.activeForDel : ''}>
-                                <input
-                                    type="checkbox"
-                                    checked={selectedImages.includes(image.id)}
-                                    onChange={() => handleImageSelect(image.id)}
-                                    id={`image-checkbox-${image.id}`}
-                                />
-                                <label htmlFor={`image-checkbox-${image.id}`}>
-                                    <img src={process.env.REACT_APP_GET_IMAGE_URL + image.url} alt={dataItem.title} />
-                                </label>
-                            </li>
-                        ))}
+                        {inputData.imageOfItems[0]?.id === 0 ?
+                            <></>
+                            : inputData.imageOfItems.map((image, imageIndex) => (
+                                <li key={`thumbnail-${dataItem.id}-${imageIndex}`} className={selectedImages.includes(image.id) ? classes.activeForDel : ''}>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedImages.includes(image.id)}
+                                        onChange={() => handleImageSelect(image.id)}
+                                        id={`image-checkbox-${image.id}`}
+                                    />
+                                    <label htmlFor={`image-checkbox-${image.id}`}>
+                                        <img src={process.env.REACT_APP_GET_IMAGE_URL + image.url} alt={dataItem.title} />
+                                    </label>
+                                </li>
+                            ))}
                         {
                             <li className={classes.addImages}>
                                 <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g clipRule="evenodd" fill="#767676" fillRule="evenodd"><path d="m12 18c-.5523 0-1-.4477-1-1v-9.37868c0-.44545-.5386-.66854-.8536-.35356l-2.43929 2.43934c-.39053.3905-1.02369.3905-1.41422 0-.39052-.39052-.39052-1.02369 0-1.41421l5.00001-5c.3905-.39052 1.0237-.39052 1.4142 0l5 5c.3905.39053.3905 1.02369 0 1.41422-.3905.39049-1.0237.39049-1.4142 0l-2.4393-2.43934c-.315-.31499-.8536-.0919-.8536.35355v9.37868c0 .5523-.4477 1-1 1z" /><path d="m5 20c0-.5523.44772-1 1-1h12c.5523 0 1 .4477 1 1s-.4477 1-1 1h-12c-.55228 0-1-.4477-1-1z" /></g></svg>
@@ -253,7 +259,7 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                     </ul>
                     {
                         selectedImages.length > 0 ?
-                            <CustomButton className="mb-5" themeColor='Red' onClick={(event: any) => { event.preventDefault(); sendQueryDeliteImages()}} >Удалить выделенные изображения</CustomButton>
+                            <CustomButton className="mb-5" themeColor='Red' onClick={(event: any) => { event.preventDefault(); sendQueryDeliteImages() }} >Удалить выделенные изображения</CustomButton>
                             :
                             <></>
                     }

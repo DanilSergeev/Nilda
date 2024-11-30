@@ -7,6 +7,7 @@ const initialState: IDataItems = {
     description: '',
     updatedAt: '',
     countryId: 0,
+    categoryId: 0,
     imageOfItems: [],
 }
 
@@ -20,6 +21,7 @@ export const itemSlice = createSlice({
             state.description = action.payload.description;
             state.updatedAt = action.payload.updatedAt;
             state.countryId = action.payload.countryId;
+            state.categoryId = action.payload.categoryId;
             state.imageOfItems = action.payload.imageOfItems.length>0?action.payload.imageOfItems: [{id:0,url:"noimage.jpg"}];
         },
         unSetItem(state) {
@@ -28,6 +30,7 @@ export const itemSlice = createSlice({
             state.description = '';
             state.updatedAt = '';
             state.countryId = 0;
+            state.categoryId = 0;
             state.imageOfItems = [];
         }
     },

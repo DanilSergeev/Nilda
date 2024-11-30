@@ -25,7 +25,7 @@ const fetchDataItems = async (branch: string) => {
 const renderCarouselItems = (data: ICardDataHomePage[]) => {
     const items = data.map((item: ICardDataHomePage) => (
         <CardsHomePage key={item.id}
-            imgSrc={`${process.env.REACT_APP_GET_IMAGE_URL}${item.imageOfItems[0]?.url}`}
+            imgSrc={`${process.env.REACT_APP_GET_IMAGE_URL}${item.imageOfItems[0] ? item.imageOfItems[0]?.url : 'noimage.jpg'}`}
             title={item.title}
             text={item.description}
             link={`/itemsById/${item.categoryId}/id/${item.id}`}

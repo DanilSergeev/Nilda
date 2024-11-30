@@ -4,6 +4,7 @@ export interface IDataItems {
     description: string,
     updatedAt: string,
     countryId: number,
+    categoryId: number,
     imageOfItems: {
         id: number,
         url: string,

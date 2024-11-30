@@ -21,8 +21,8 @@ export default class DataItemService{
         return $api.put(`/item/update/${id}`, {title, description, categoryId, countryId})
         .then((res:any)=>res.data)
     }
-    static async updateItemImages(formData:FormData){
-        return $api.put(`/item/updateImage/`, formData)
+    static async updateItemImages(id:number, formData:FormData){
+        return $api.put(`/item/updateImage/${id}`, formData)
         .then((res:any)=>res.data)
     }
     static async deleteItem(id:number){

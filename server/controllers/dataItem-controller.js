@@ -100,15 +100,17 @@ class DataItemController {
 
     async updateItemImages(req, res, next) {
         try {
-            const { imagesId, variant } = req.body;
-            if (!imagesId) {
-                return next(ApiError.BadRequest("imagesId не передан"));
+            const { id } = req.params;
+            if (!id) {
+                return next(ApiError.BadRequest("ID не передан"));
             }
-            if (!variant) {
-                return next(ApiError.BadRequest("variant не передан"));
+            let images = req.files;
+
+            if (!images || images.length === 0) {
+                return next(ApiError.BadRequest("Изображение не передано"));
             }
 
-            const data = await ItemsService.updateItemImages( imagesId, variant);
+            const data = await ItemsService.updateItemImages( id, images);
             res.json(data);
         } catch (error) {
             next(error);

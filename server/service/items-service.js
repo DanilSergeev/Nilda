@@ -104,34 +104,48 @@ class ItemsService {
             { title, description, categoryId, countryId },
             { where: { id } }
         );
-
-        // if (imagesId.length > 0) {
-        //     const images = await ImageOfItem.findAll({ where: { id: imagesId } });
-        //     await itemData.setImageOfItems(images);
-        // }
-
-        // return { data: await Items.findOne({ where: { id }, include: [ImageOfItem] }) };
+     
         return { data: await Items.findOne({ where: { id } }) };
     }
 
-    // async updateItemImages(id, imagesId = [], variant) {
-    //     const itemData = await Items.findOne({ where: { id }, include: [ImageOfItem] });
-    //     if (!itemData) {
-    //         throw ApiError.BadRequest(400, `Такой id ${id} не нейден`);
-    //     }
+    async updateItemImages(id, images) {
+        const itemData = await Items.findOne({ where: { id }, include: [ImageOfItem] });
+        if (!itemData) {
+            throw ApiError.BadRequest(400, `Такой id ${id} не нейден`);
+        }
+        
+        let imageArray = [];
 
-    //     if (variant === 'add') {
-    //         const images = await ImageOfItem.findAll({ where: { id: imagesId } });
-    //         await itemData.addImageOfItems(images);
-    //     } else if (variant === 'update') {
-    //         const images = await ImageOfItem.findAll({ where: { id: imagesId } });
-    //         await itemData.setImageOfItems(images);
-    //     } else {
-    //         throw ApiError.BadRequest(400, `Invalid variant: ${variant}`);
-    //     }
+        if (images.file) {
+            imageArray = [images.file];
+        } else if (images.img) {
+            imageArray = Array.isArray(images.img) ? images.img : [images.img];
+        } else if (images.files) {
+            imageArray = Array.isArray(images.files) ? images.files : [images.files];
+        }
 
-    //     return { data: await Items.findOne({ where: { id }, include: [ImageOfItem] }) };
-    // }
+        if (imageArray.length > 0) {
+
+            const imageInstances = await Promise.all(
+                imageArray.map(async (img) => {
+                    const fileName = uuid.v4() + ".jpg";
+                    const filePath = path.resolve(__dirname, "..", "static", fileName);
+                    try {
+                        await img.mv(filePath);
+                    } catch (error) {
+                        throw new Error(`Ошибка при сохранении изображения: ${error.message}`);
+                    }
+
+
+                    return ImageOfItem.create({ url: fileName });
+                })
+            );
+
+            await itemData.addImageOfItems(imageInstances);
+        }
+
+        return { data: await Items.findOne({ where: { id }, include: [ImageOfItem] }) };
+    }
 
 
     async deleteItem(id) {
