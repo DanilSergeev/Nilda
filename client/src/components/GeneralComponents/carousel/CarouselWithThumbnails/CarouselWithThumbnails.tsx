@@ -13,7 +13,7 @@ const CarouselWithThumbnails: FC = () => {
   
   const imageOfItems = dataItems.imageOfItems || [];
   return (
-    <div className={classes.container}>
+    <div className={classes.container} >
       <div className={classes.carousel}>
         {imageOfItems.map((_, imageIndex) => (
           <React.Fragment key={`radio-${dataItems.id}-${imageIndex}`}>

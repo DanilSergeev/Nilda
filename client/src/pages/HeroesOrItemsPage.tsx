@@ -91,7 +91,7 @@ const HeroesOrItemsPage = () => {
                             itemsData.data.map((item) => ( 
                                 <CardsHomePage
                                     key={item.id}
-                                    imgSrc={`${process.env.REACT_APP_GET_IMAGE_URL}${item.imageOfItems[0]?.url}`}
+                                    imgSrc={`${process.env.REACT_APP_GET_IMAGE_URL}${ item.imageOfItems[0]?  item.imageOfItems[0]?.url: 'noimage.jpg'}`}
                                     title={item.title.length > 25 ? item.title.substr(0, 25) + "..." : item.title}
                                     text={item.description.length > 90 ? item.description.substr(0, 90) + "..." : item.description}
                                     link={`/itemsById/${categoryId}/id/${item.id}`}

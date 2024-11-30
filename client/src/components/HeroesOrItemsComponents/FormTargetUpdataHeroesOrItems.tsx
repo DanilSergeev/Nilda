@@ -102,7 +102,8 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
     }
     async function sendQueryDeliteImages() {
         try {
-            // await DataItemService.updateItem(ideaTargetData.id, title, text);
+            const data =await DataItemService.deleteImagesOfItem(dataItem.id, selectedImages);
+            console.log(data)
             // const { id, countryId, imageOfItems } = dataItem
             // dispatch(updateItems({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
             // dispatch(setItem({ id, title: inputData.title, description: inputData.description, updatedAt: new Date().toISOString(), countryId, imageOfItems }))
@@ -226,7 +227,9 @@ const FormTargetUpdataHeroesOrItems: FC<IFormTargetUpdataHeroesOrItemsProps> = (
                 <Form.Group className="mb-3" >
                     <Form.Label>Управляйте изображениями</Form.Label>
                     <ul className={classes.carousel__thumbnails}>
-                        {inputData.imageOfItems.map((image, imageIndex) => (
+                        {inputData.imageOfItems[0].id===0 ?
+                        <></>
+                        :inputData.imageOfItems.map((image, imageIndex) => (
                             <li key={`thumbnail-${dataItem.id}-${imageIndex}`} className={selectedImages.includes(image.id) ? classes.activeForDel : ''}>
                                 <input
                                     type="checkbox"

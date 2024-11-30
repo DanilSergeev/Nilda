@@ -28,5 +28,9 @@ export default class DataItemService{
     static async deleteItem(id:number){
         return $api.delete(`/item/${id}`)
     }
+    static async deleteImagesOfItem(id:number, idImages: number[]){
+        return $api.delete(`/item/deleteImages/${id}`, { data: { idImages } })
+    }
+  
   
 }

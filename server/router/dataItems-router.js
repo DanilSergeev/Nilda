@@ -13,5 +13,6 @@ router.post('/item', checkRoleMiddlware("ADMIN"), authMiddlware, dataItemControl
 router.put('/item/update/:id', checkRoleMiddlware("ADMIN"), authMiddlware, dataItemController.updateItem);
 router.put('/item/updateImage/:id', checkRoleMiddlware("ADMIN"), authMiddlware, dataItemController.updateItemImages);
 router.delete('/item/:id', checkRoleMiddlware("ADMIN"), authMiddlware, dataItemController.deleteItem);
+router.delete('/item/deleteImages/:id', checkRoleMiddlware("ADMIN"), authMiddlware, dataItemController.deleteImagesOfItem);
 
 module.exports = router;

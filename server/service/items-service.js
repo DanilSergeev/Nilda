@@ -47,13 +47,13 @@ class ItemsService {
         });
 
         let imageArray = [];
-       
+
         if (images.file) {
             imageArray = [images.file];
         } else if (images.img) {
-            imageArray = Array.isArray(images.img) ? images.img : [images.img]; 
+            imageArray = Array.isArray(images.img) ? images.img : [images.img];
         } else if (images.files) {
-            imageArray = Array.isArray(images.files) ? images.files : [images.files]; 
+            imageArray = Array.isArray(images.files) ? images.files : [images.files];
         }
 
         if (imageArray.length > 0) {
@@ -80,6 +80,18 @@ class ItemsService {
     }
 
 
+    async deleteImagesOfItem(id, idImages) {
+        if (idImages.length > 0) {
+            await ImageOfItem.destroy({
+                where: {
+                    id: idImages, 
+                }
+            });
+            return `Images deleted.`
+        } else {
+            return "No image IDs provided to delete."
+        }
+    }
 
 
     async updateItem(id, title, description, categoryId, countryId) {
@@ -99,7 +111,7 @@ class ItemsService {
         // }
 
         // return { data: await Items.findOne({ where: { id }, include: [ImageOfItem] }) };
-        return { data: await Items.findOne({ where: { id }}) };
+        return { data: await Items.findOne({ where: { id } }) };
     }
 
     // async updateItemImages(id, imagesId = [], variant) {

@@ -20,7 +20,7 @@ export const itemSlice = createSlice({
             state.description = action.payload.description;
             state.updatedAt = action.payload.updatedAt;
             state.countryId = action.payload.countryId;
-            state.imageOfItems = action.payload.imageOfItems;
+            state.imageOfItems = action.payload.imageOfItems.length>0?action.payload.imageOfItems: [{id:0,url:"noimage.jpg"}];
         },
         unSetItem(state) {
             state.id = 0;

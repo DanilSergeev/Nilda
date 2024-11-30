@@ -173,6 +173,7 @@
   cursor: pointer;
   width: -webkit-fill-available;
   height: -webkit-fill-available;
+  min-height: 10vh;
 }
 
 .carousel__thumbnails .addImages svg {

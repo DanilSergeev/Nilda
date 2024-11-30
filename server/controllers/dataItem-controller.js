@@ -79,6 +79,25 @@ class DataItemController {
         }
     }
 
+    async deleteImagesOfItem(req, res, next) {
+        try {
+            const { id } = req.params;
+            if (!id) {
+                return next(ApiError.BadRequest("ID не передан"));
+            }
+            const { idImages } = req.body;
+
+            if (idImages.length<1) {
+                return next(ApiError.BadRequest("Изображения не переданы"));
+            }
+            const data = await ItemsService.deleteImagesOfItem(id, idImages);
+            res.json(data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
     async updateItemImages(req, res, next) {
         try {
             const { imagesId, variant } = req.body;
