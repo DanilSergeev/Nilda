@@ -21,7 +21,7 @@ const HomePage = () => {
             <ItemsHomeComponents/>
             {/* <AboutMangaHomeComponents/>
             <AboutGamesHomeComponents/>
-            <AboutAnimeHomeComponents/> */}
+            <AboutAnimeHomeComponents/> */} 
         </main>
     )
 }
