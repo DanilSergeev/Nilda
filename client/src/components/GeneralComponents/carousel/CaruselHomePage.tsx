@@ -43,7 +43,7 @@ const groupItems = (items: JSX.Element[], groupSize: number) => {
             </Carousel.Item>
         );
     }
-    return groups;
+    return groups.length < 1 ? [<div key={"none"}>Нет элементов для отображения</div>] : groups
 };
 
 const CaruselHomePage: FC<ICarusel> = ({ branch = 'hero' }) => {
@@ -67,6 +67,7 @@ const CaruselHomePage: FC<ICarusel> = ({ branch = 'hero' }) => {
 
     return (
         <Carousel indicators={false} className="carouselHome" interval={6000} touch={false}>
+
             {carouselItems}
         </Carousel>
     );

@@ -1,5 +1,6 @@
-const { Items, ImageOfItem, ItemImages } = require("../models/models")
+const { Items, ImageOfItem } = require("../models/models")
 const ApiError = require("../exceptions/api-error")
+const sharp = require('sharp');
 const uuid = require("uuid")
 const path = require("path");
 
@@ -63,11 +64,13 @@ class ItemsService {
                     const fileName = uuid.v4() + ".jpg";
                     const filePath = path.resolve(__dirname, "..", "static", fileName);
                     try {
-                        await img.mv(filePath);
+                        await sharp(img.data)
+                            .resize(1200)
+                            .jpeg({ quality: 80 })
+                            .toFile(filePath);
                     } catch (error) {
                         throw new Error(`Ошибка при сохранении изображения: ${error.message}`);
                     }
-
 
                     return ImageOfItem.create({ url: fileName });
                 })
@@ -84,7 +87,7 @@ class ItemsService {
         if (idImages.length > 0) {
             await ImageOfItem.destroy({
                 where: {
-                    id: idImages, 
+                    id: idImages,
                 }
             });
             return `Images deleted.`
@@ -104,7 +107,7 @@ class ItemsService {
             { title, description, categoryId, countryId },
             { where: { id } }
         );
-     
+
         return { data: await Items.findOne({ where: { id } }) };
     }
 
@@ -113,7 +116,7 @@ class ItemsService {
         if (!itemData) {
             throw ApiError.BadRequest(400, `Такой id ${id} не нейден`);
         }
-        
+
         let imageArray = [];
 
         if (images.file) {
@@ -131,12 +134,13 @@ class ItemsService {
                     const fileName = uuid.v4() + ".jpg";
                     const filePath = path.resolve(__dirname, "..", "static", fileName);
                     try {
-                        await img.mv(filePath);
+                        await sharp(img.data)
+                            .resize(1200)
+                            .jpeg({ quality: 80 })
+                            .toFile(filePath);
                     } catch (error) {
                         throw new Error(`Ошибка при сохранении изображения: ${error.message}`);
                     }
-
-
                     return ImageOfItem.create({ url: fileName });
                 })
             );
